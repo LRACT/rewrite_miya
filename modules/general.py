@@ -66,8 +66,7 @@ class General(commands.Cog, name="일반"):
         미야의 초대 링크를 표시합니다.
         """
         embed = discord.Embed(
-            description=
-            "[여기](https://discord.com/api/oauth2/authorize?client_id=720724942873821316&permissions=2147483647&redirect_uri=https%3A%2F%2Fmiya.kro.kr&response_type=code&scope=bot%20identify%20email)를 클릭하면 초대하실 수 있어요!",
+            description="[여기](https://discord.com/api/oauth2/authorize?client_id=720724942873821316&permissions=2147483647&redirect_uri=https%3A%2F%2Fmiya.kro.kr&response_type=code&scope=bot%20identify%20email)를 클릭하면 초대하실 수 있어요!",
             color=0x5FE9FF,
             timestamp=datetime.datetime.utcnow(),
         )
@@ -298,8 +297,7 @@ class General(commands.Cog, name="일반"):
             embed.set_footer(
                 text="코로나19 감염이 의심되면 즉시 보건소 및 콜센터(전화1339)로 신고바랍니다.")
             embed.set_thumbnail(
-                url=
-                "https://cdn.discordapp.com/attachments/746786600037384203/761404488023408640/unknown.png"
+                url="https://cdn.discordapp.com/attachments/746786600037384203/761404488023408640/unknown.png"
             )
             await ctx.reply(embed=embed)
 

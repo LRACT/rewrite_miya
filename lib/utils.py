@@ -139,7 +139,6 @@ class Check:
             return False
         return mrows[0][1] == "Administrator"
 
-
     async def identify(self, ctx):
         if ctx.channel.type == discord.ChannelType.private:
             await self.hook.terminal(
