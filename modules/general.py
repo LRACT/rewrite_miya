@@ -22,7 +22,6 @@ locale.setlocale(locale.LC_ALL, "")
 class General(commands.Cog, name="일반"):
     def __init__(self, miya):
         self.miya = miya
-    
 
     @commands.command(name="핑")
     async def ping(self, ctx):
@@ -37,12 +36,14 @@ class General(commands.Cog, name="일반"):
         last_time = datetime.datetime.utcnow()
         asdf = str(last_time - first_time)[6:]
         msg_latency = round(float(asdf) * 1000, 2)
-        uptime = datetime.datetime.now() - datetime.datetime.fromtimestamp(psutil.Process(os.getpid()).create_time())
+        uptime = datetime.datetime.now(
+        ) - datetime.datetime.fromtimestamp(psutil.Process(os.getpid()).create_time())
         shard = self.miya.get_shard(ctx.guild.shard_id)
         bot_latency = round(shard.latency * 1000, 2)
         embed = discord.Embed(color=0x5FE9FF,
                               timestamp=datetime.datetime.utcnow())
-        embed.add_field(name="API 지연 시간", value=f"{bot_latency}ms", inline=False)
+        embed.add_field(name="API 지연 시간",
+                        value=f"{bot_latency}ms", inline=False)
         embed.add_field(name="메시지 지연 시간",
                         value=f"{msg_latency}ms",
                         inline=False)
@@ -62,8 +63,7 @@ class General(commands.Cog, name="일반"):
         미야의 초대 링크를 표시합니다.
         """
         embed = discord.Embed(
-            description=
-            "[여기](https://discord.com/api/oauth2/authorize?client_id=720724942873821316&permissions=2147483647&redirect_uri=https%3A%2F%2Fmiya.kro.kr&response_type=code&scope=bot%20identify%20email)를 클릭하면 초대하실 수 있어요!",
+            description="[여기](https://discord.com/api/oauth2/authorize?client_id=720724942873821316&permissions=2147483647&redirect_uri=https%3A%2F%2Fmiya.kro.kr&response_type=code&scope=bot%20identify%20email)를 클릭하면 초대하실 수 있어요!",
             color=0x5FE9FF,
             timestamp=datetime.datetime.utcnow(),
         )
@@ -163,9 +163,9 @@ class General(commands.Cog, name="일반"):
             embed = discord.Embed(title=f"{ctx.guild.name} 정보 및 미야 설정",
                                   color=0x5FE9FF)
             guilds = await sql(0,
-                f"SELECT * FROM `guilds` WHERE `guild` = '{ctx.guild.id}'")
+                               f"SELECT * FROM `guilds` WHERE `guild` = '{ctx.guild.id}'")
             memberNoti = await sql(0,
-                f"SELECT * FROM `membernoti` WHERE `guild` = '{ctx.guild.id}'")
+                                   f"SELECT * FROM `membernoti` WHERE `guild` = '{ctx.guild.id}'")
             muteRole = "설정되어 있지 않아요!"
             memberCh = "설정되어 있지 않아요!"
             logCh = "설정되어 있지 않아요!"
@@ -180,7 +180,8 @@ class General(commands.Cog, name="일반"):
             if guilds[0][1] != 'None':
                 async with aiohttp.ClientSession() as session:
                     try:
-                        webhook = Webhook.from_url(guilds[0][1], adapter=AsyncWebhookAdapter(session))
+                        webhook = Webhook.from_url(
+                            guilds[0][1], adapter=AsyncWebhookAdapter(session))
                         channel = webhook.channel
                         if channel is not None:
                             logCh = channel.mention
@@ -292,8 +293,7 @@ class General(commands.Cog, name="일반"):
             embed.set_footer(
                 text="코로나19 감염이 의심되면 즉시 보건소 및 콜센터(전화1339)로 신고바랍니다.")
             embed.set_thumbnail(
-                url=
-                "https://cdn.discordapp.com/attachments/746786600037384203/761404488023408640/unknown.png"
+                url="https://cdn.discordapp.com/attachments/746786600037384203/761404488023408640/unknown.png"
             )
             await ctx.reply(embed=embed)
 

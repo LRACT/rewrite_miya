@@ -30,7 +30,7 @@ class Economy(commands.Cog, name="경제"):
         if user is None:
             user = ctx.author
         rows = await sql(0,
-            f"SELECT * FROM `users` WHERE `user` = '{user.id}'")
+                         f"SELECT * FROM `users` WHERE `user` = '{user.id}'")
         if not rows:
             await ctx.reply(
                 f"<:cs_no:659355468816187405> **{user}**님은 미야 서비스에 가입하지 않으셨어요."
@@ -63,11 +63,11 @@ class Economy(commands.Cog, name="경제"):
         300 코인을 지급합니다. 12시간에 한 번만 사용 가능합니다.
         """
         rows = await sql(0,
-            f"SELECT * FROM `users` WHERE `user` = '{ctx.author.id}'")
+                         f"SELECT * FROM `users` WHERE `user` = '{ctx.author.id}'")
         plus = int(rows[0][1]) + 300
         await sql(1,
-            f"UPDATE `users` SET `money` = '{plus}' WHERE `user` = '{ctx.author.id}'"
-        )
+                  f"UPDATE `users` SET `money` = '{plus}' WHERE `user` = '{ctx.author.id}'"
+                  )
         await ctx.reply("🎋 당신의 잔고에 `300` 코인을 추가했어요!\n매 12시간마다 다시 지급받으실 수 있어요.")
 
     @commands.command(name="도박")
@@ -80,7 +80,7 @@ class Economy(commands.Cog, name="경제"):
         금액을 걸고 주사위 도박을 진행합니다.
         """
         rows = await sql(0,
-            f"SELECT * FROM `users` WHERE `user` = '{ctx.author.id}'")
+                         f"SELECT * FROM `users` WHERE `user` = '{ctx.author.id}'")
         if money in ["모두", "전체", "올인"]:
             money = rows[0][1]
         elif money.isdecimal() is not True:
@@ -124,8 +124,8 @@ class Economy(commands.Cog, name="경제"):
                             value=f"`🎲 {user}`",
                             inline=True)
             await sql(1,
-                f"UPDATE `users` SET `money` = '{rest}' WHERE `user` = '{ctx.author.id}'"
-            )
+                      f"UPDATE `users` SET `money` = '{rest}' WHERE `user` = '{ctx.author.id}'"
+                      )
             await ctx.reply(embed=embed)
 
     @commands.command(name="매수")
@@ -135,9 +135,9 @@ class Economy(commands.Cog, name="경제"):
             raise commands.BadArgument
         else:
             user = (await sql(0,
-                f"SELECT * FROM `users` WHERE `user` = '{ctx.author.id}'"))[0]
+                              f"SELECT * FROM `users` WHERE `user` = '{ctx.author.id}'"))[0]
             stat = (await sql(0,
-                f"SELECT * FROM `stocks` WHERE `name` = '{stock}'"))[0]
+                              f"SELECT * FROM `stocks` WHERE `name` = '{stock}'"))[0]
             if value in ["모두", "전체", "올인"]:
                 value = round(int(user[1]) / int(stat[1]))
             elif value.isdecimal() is not True:
