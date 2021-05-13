@@ -17,9 +17,14 @@ Check = utils.Check()
 
 def has_no_symbols():
     async def search(ctx):
-        if "\\" not in ctx.message.content and '"' not in ctx.message.content and "'" not in ctx.message.content:
+        if (
+            "\\" not in ctx.message.content
+            and '"' not in ctx.message.content
+            and "'" not in ctx.message.content
+        ):
             return True
         return False
+
     return commands.check(search)
 
 
@@ -39,24 +44,38 @@ class CC(commands.Cog, name="지식 및 배우기"):
         else:
             if response.voted:
                 embed = discord.Embed(
-                    title="정말로 미야에게 이렇게 가르칠까요?", description=f"등록되면 미야가 `{word}`라고 물어봤을 때\n```{value}```\n(이)라고 답할거에요.\n \n*부적절한 어휘 및 답변의 경우 예고 없이 삭제될 수 있어요.*", color=0x5FE9FF, timestamp=datetime.datetime.utcnow())
+                    title="정말로 미야에게 이렇게 가르칠까요?",
+                    description=f"등록되면 미야가 `{word}`라고 물어봤을 때\n```{value}```\n(이)라고 답할거에요.\n \n*부적절한 어휘 및 답변의 경우 예고 없이 삭제될 수 있어요.*",
+                    color=0x5FE9FF,
+                    timestamp=datetime.datetime.utcnow(),
+                )
                 msg = await ctx.reply(embed=embed)
                 await msg.add_reaction("<:cs_yes:659355468715786262>")
                 await msg.add_reaction("<:cs_no:659355468816187405>")
 
                 def check(reaction, user):
                     return reaction.message.id == msg.id and user == ctx.author
+
                 try:
-                    reaction, user = await self.miya.wait_for('reaction_add', timeout=60, check=check)
+                    reaction, user = await self.miya.wait_for(
+                        "reaction_add", timeout=60, check=check
+                    )
                 except:
                     await msg.delete()
                 else:
                     if str(reaction.emoji) == "<:cs_yes:659355468715786262>":
                         rows = await sql(0, f"SELECT * FROM `cc` ORDER BY `no` DESC")
                         number = int(rows[0][0]) + 1
-                        await sql(1, f"INSERT INTO `cc`(`no`, `word`, `description`, `user`, `disabled`) VALUES('{number}', '{word}', '{value}', '{ctx.author.id}', 'false')")
+                        await sql(
+                            1,
+                            f"INSERT INTO `cc`(`no`, `word`, `description`, `user`, `disabled`) VALUES('{number}', '{word}', '{value}', '{ctx.author.id}', 'false')",
+                        )
                         embed = discord.Embed(
-                            title="가르쳐주셔서 고마워요!", description=f"이제 `{word}`에 이렇게 답할거에요:\n```{value}```\n.", color=0x5FE9FF, timestamp=datetime.datetime.utcnow())
+                            title="가르쳐주셔서 고마워요!",
+                            description=f"이제 `{word}`에 이렇게 답할거에요:\n```{value}```\n.",
+                            color=0x5FE9FF,
+                            timestamp=datetime.datetime.utcnow(),
+                        )
                         await msg.edit(embed=embed)
                     else:
                         await msg.delete()
@@ -67,9 +86,11 @@ class CC(commands.Cog, name="지식 및 배우기"):
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
-        if (isinstance(error, commands.CommandNotFound)
+        if (
+            isinstance(error, commands.CommandNotFound)
             or isinstance(error, commands.NotOwner)
-                or isinstance(error, commands.CheckFailure)):
+            or isinstance(error, commands.CheckFailure)
+        ):
             try:
                 p = await Check.identify(ctx)
             except Exception as e:
@@ -96,20 +117,22 @@ class CC(commands.Cog, name="지식 및 배우기"):
                     if not rows:
                         async with aiohttp.ClientSession() as cs:
                             async with cs.post(
-                                    config.PPBRequest,
-                                    headers=headers,
-                                    json={"request": {
-                                        "query": query
-                                    }},
+                                config.PPBRequest,
+                                headers=headers,
+                                json={"request": {"query": query}},
                             ) as r:
                                 response_msg = await r.json()
                                 msg = response_msg["response"]["replies"][0]["text"]
-                                if msg != "앗, 저 이번 달에 할 수 있는 말을 다 해버렸어요 🤐 다음 달까지 기다려주실거죠? ☹️":
-                                    await Hook.terminal(0,
-                                                        f"PINGPONG Builder >\nUser - {ctx.author} ({ctx.author.id})\nSent - {query}\nReceived - {msg}\nGuild - {ctx.guild.name} ({ctx.guild.id})",
-                                                        "명령어 처리 기록",
-                                                        self.miya.user.avatar_url,
-                                                        )
+                                if (
+                                    msg
+                                    != "앗, 저 이번 달에 할 수 있는 말을 다 해버렸어요 🤐 다음 달까지 기다려주실거죠? ☹️"
+                                ):
+                                    await Hook.terminal(
+                                        0,
+                                        f"PINGPONG Builder >\nUser - {ctx.author} ({ctx.author.id})\nSent - {query}\nReceived - {msg}\nGuild - {ctx.guild.name} ({ctx.guild.id})",
+                                        "명령어 처리 기록",
+                                        self.miya.user.avatar_url,
+                                    )
                                     embed = discord.Embed(
                                         title=msg,
                                         description=f"[Discord 지원 서버 접속하기](https://discord.gg/tu4NKbEEnn)\n[한국 디스코드 봇 리스트 하트 누르기](https://koreanbots.dev/bots/720724942873821316)",
