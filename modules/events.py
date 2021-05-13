@@ -74,19 +74,18 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
             "manage_messages": "메시지 관리하기",
         }
         if isinstance(error, commands.CommandNotFound) or isinstance(
-            error, commands.NotOwner
-        ):
+                error, commands.NotOwner):
             return
         if isinstance(error, Forbidden):
             await ctx.reply(str(error), embed=error.embed)
         elif isinstance(error, NoReg) or isinstance(error, Maintaining):
             await ctx.reply(str(error))
         elif isinstance(error, discord.NotFound) or isinstance(
-            error, commands.NoPrivateMessage
-        ):
+                error, commands.NoPrivateMessage):
             return
         elif isinstance(error, discord.Forbidden):
-            await ctx.reply(f"<:cs_no:659355468816187405> 권한 부족 등의 이유로 명령어 실행에 실패했어요.")
+            await ctx.reply(
+                f"<:cs_no:659355468816187405> 권한 부족 등의 이유로 명령어 실행에 실패했어요.")
         elif isinstance(error, commands.MissingPermissions):
             mp = error.missing_perms
             p = perms[mp[0]]
@@ -104,11 +103,9 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
                 f"<:cs_stop:665173353874587678> 잠시 기다려주세요. 해당 명령어를 사용하려면 {round(error.retry_after, 2)}초를 더 기다리셔야 해요.\n해당 명령어는 `{error.cooldown.per}`초에 `{error.cooldown.rate}`번만 사용할 수 있어요."
             )
         elif isinstance(error, commands.MissingRequiredArgument) or isinstance(
-            error, commands.BadArgument
-        ):
+                error, commands.BadArgument):
             if isinstance(error, commands.MemberNotFound) or isinstance(
-                error, commands.UserNotFound
-            ):
+                    error, commands.UserNotFound):
                 await ctx.reply(
                     f":mag_right: `{error.argument}`(이)라는 유저를 찾을 수 없었어요. 정확한 유저를 지정해주세요!"
                 )
@@ -148,14 +145,10 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
         if msg.channel.type == discord.ChannelType.private:
             return
 
-        if (
-            "discord.gg" in msg.content
-            or "discord.com/invite" in msg.content
-            or "discordapp.com/invite" in msg.content
-        ):
+        if ("discord.gg" in msg.content or "discord.com/invite" in msg.content
+                or "discordapp.com/invite" in msg.content):
             rows = await sql(
-                0, f"SELECT * FROM `guilds` WHERE `guild` = '{msg.guild.id}'"
-            )
+                0, f"SELECT * FROM `guilds` WHERE `guild` = '{msg.guild.id}'")
             if rows:
                 if rows[0][3] == "true":
                     if msg.channel.topic is None or "=무시" not in msg.channel.topic:
@@ -175,7 +168,8 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
             "서버 입퇴장 기록",
             self.miya.user.avatar_url,
         )
-        grows = await sql(0, f"SELECT * FROM `guilds` WHERE `guild` = '{guild.id}'")
+        grows = await sql(
+            0, f"SELECT * FROM `guilds` WHERE `guild` = '{guild.id}'")
         if not grows:
             g_result = await sql(
                 1,
@@ -205,7 +199,8 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
                         timestamp=datetime.datetime.utcnow(),
                         color=0x5FE9FF,
                     )
-                    embed.set_author(name="반가워요!", icon_url=self.miya.user.avatar_url)
+                    embed.set_author(name="반가워요!",
+                                     icon_url=self.miya.user.avatar_url)
                     await guild.owner.send(
                         f"<:cs_notify:659355468904529920> {guild.owner.mention}",
                         embed=embed,
@@ -227,10 +222,10 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
                 await guild.text_channels[0].send(
                     f"<:cs_stop:665173353874587678> {guild.owner.mention} 미야 설정이 정상적으로 완료되지 않았습니다.\n자세한 내용은 https://discord.gg/tu4NKbEEnn 으로 문의해주세요."
                 )
-        rows = await sql(0, f"SELECT * FROM `blacklist` WHERE `id` = '{guild.id}'")
+        rows = await sql(
+            0, f"SELECT * FROM `blacklist` WHERE `id` = '{guild.id}'")
         rows2 = await sql(
-            0, f"SELECT * FROM `blacklist` WHERE `id` = '{guild.owner.id}'"
-        )
+            0, f"SELECT * FROM `blacklist` WHERE `id` = '{guild.owner.id}'")
         if rows or rows2:
             try:
                 temp = None
@@ -253,7 +248,8 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
                     timestamp=datetime.datetime.utcnow(),
                     color=0xFF3333,
                 )
-                embed.set_author(name="초대 제한", icon_url=self.miya.user.avatar_url)
+                embed.set_author(name="초대 제한",
+                                 icon_url=self.miya.user.avatar_url)
                 await guild.owner.send(
                     f"<:cs_notify:659355468904529920> {guild.owner.mention} https://discord.gg/tu4NKbEEnn",
                     embed=embed,
@@ -277,7 +273,8 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
                     timestamp=datetime.datetime.utcnow(),
                     color=0xFF3333,
                 )
-                embed.set_author(name="초대 제한", icon_url=self.miya.user.avatar_url)
+                embed.set_author(name="초대 제한",
+                                 icon_url=self.miya.user.avatar_url)
                 await guild.text_channels[0].send(
                     f"<:cs_notify:659355468904529920> {guild.owner.mention} https://discord.gg/tu4NKbEEnn",
                     embed=embed,
@@ -303,7 +300,8 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
     async def on_member_join(self, member):
         if member.bot == False:
             rows = await sql(
-                0, f"SELECT * FROM `membernoti` WHERE `guild` = '{member.guild.id}'"
+                0,
+                f"SELECT * FROM `membernoti` WHERE `guild` = '{member.guild.id}'"
             )
             if not rows:
                 return
@@ -314,7 +312,8 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
                     try:
                         msg = value[2].replace("{member}", str(member.mention))
                         msg = msg.replace("{guild}", str(member.guild.name))
-                        msg = msg.replace("{count}", str(member.guild.member_count))
+                        msg = msg.replace("{count}",
+                                          str(member.guild.member_count))
                         await channel.send(msg)
                     except Exception as e:
                         await Hook.terminal(
@@ -328,7 +327,8 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
     async def on_member_remove(self, member):
         if member.bot == False:
             rows = await sql(
-                0, f"SELECT * FROM `membernoti` WHERE `guild` = '{member.guild.id}'"
+                0,
+                f"SELECT * FROM `membernoti` WHERE `guild` = '{member.guild.id}'"
             )
             if not rows:
                 return
@@ -339,7 +339,8 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
                     try:
                         msg = value[3].replace("{member}", str(member))
                         msg = msg.replace("{guild}", str(member.guild.name))
-                        msg = msg.replace("{count}", str(member.guild.member_count))
+                        msg = msg.replace("{count}",
+                                          str(member.guild.member_count))
                         await channel.send(msg)
                     except Exception as e:
                         await Hook.terminal(
