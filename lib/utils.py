@@ -16,8 +16,7 @@ from lib import config
 class Forbidden(commands.CheckFailure):
     def __init__(self, embed):
         self.embed = embed
-        super().__init__(
-            "<a:ban_guy:761149578216603668> https://discord.gg/tu4NKbEEnn")
+        super().__init__("<a:ban_guy:761149578216603668> https://discord.gg/tu4NKbEEnn")
 
 
 class NoReg(commands.CheckFailure):
@@ -67,16 +66,12 @@ class Hook:
         else:
             raise discord.NotFound
         async with aiohttp.ClientSession() as session:
-            webhook = Webhook.from_url(url,
-                                       adapter=AsyncWebhookAdapter(session))
-            await webhook.send(f"```{content}```",
-                               username=name,
-                               avatar_url=avatar)
+            webhook = Webhook.from_url(url, adapter=AsyncWebhookAdapter(session))
+            await webhook.send(f"```{content}```", username=name, avatar_url=avatar)
 
     async def hook(self, url, content, name, avatar):
         async with aiohttp.ClientSession() as session:
-            webhook = Webhook.from_url(url,
-                                       adapter=AsyncWebhookAdapter(session))
+            webhook = Webhook.from_url(url, adapter=AsyncWebhookAdapter(session))
             await webhook.send(content, username=name, avatar_url=avatar)
 
 
@@ -127,8 +122,7 @@ class Blacklisting:
                 self.miya.user.avatar_url,
             )
         elif task == 1:
-            await sql(1,
-                      f"DELETE FROM `blacklist` WHERE `id` = '{id}'")
+            await sql(1, f"DELETE FROM `blacklist` WHERE `id` = '{id}'")
             await Hook.terminal(
                 1,
                 f"Removed Block >\nUnblocked - {id}\nAdmin - {admin} ({admin.id})",
@@ -140,8 +134,7 @@ class Blacklisting:
 
     async def word(self, task, word):
         if task == 0:
-            await sql(
-                1, f"INSERT INTO `forbidden`(`word`) VALUES('{word}')")
+            await sql(1, f"INSERT INTO `forbidden`(`word`) VALUES('{word}')")
             await Hook.terminal(
                 1,
                 f"New Forbidden >\nAdmin - {ctx.author} ({ctx.author.id})\nPhrase - {word}",
@@ -149,8 +142,7 @@ class Blacklisting:
                 self.miya.user.avatar_url,
             )
         elif task == 1:
-            await sql(
-                1, f"DELETE FROM `forbidden` WHERE `word` = '{word}'")
+            await sql(1, f"DELETE FROM `forbidden` WHERE `word` = '{word}'")
             await Hook.terminal(
                 1,
                 f"Removed Forbidden >\nAdmin - {ctx.author} ({ctx.author.id})\nPhrase - {word}",
@@ -175,19 +167,23 @@ class Check:
         return {"Explicit": False}
 
     async def block(self, ctx):
-        user = await sql(
-            0, f"SELECT * FROM `users` WHERE `user` = '{ctx.author.id}'")
+        user = await sql(0, f"SELECT * FROM `users` WHERE `user` = '{ctx.author.id}'")
         if user[0][1] == "Blocked":
             rows = await sql(
-                0, f"SELECT * FROM `blacklist` WHERE `id` = '{ctx.author.id}'")
-            return {"Blocked": True, "Reason": rows[0][1], "Admin": ctx.bot.get_user(int(rows[0][2])), "Time": rows[0][3]}
+                0, f"SELECT * FROM `blacklist` WHERE `id` = '{ctx.author.id}'"
+            )
+            return {
+                "Blocked": True,
+                "Reason": rows[0][1],
+                "Admin": ctx.bot.get_user(int(rows[0][2])),
+                "Time": rows[0][3],
+            }
         return {"Blocked": False}
 
     async def mgr(self, ctx):
         if commands.is_owner():
             return True
-        mrows = await sql(
-            0, f"SELECT * FROM `users` WHERE `user` = {ctx.author.id}")
+        mrows = await sql(0, f"SELECT * FROM `users` WHERE `user` = {ctx.author.id}")
         if not mrows:
             return False
         return mrows[0][1] == "Maintainer" or mrows[0][1] == "Administrator"
@@ -195,8 +191,7 @@ class Check:
     async def owner(self, ctx):
         if commands.is_owner():
             return True
-        mrows = await sql(
-            0, f"SELECT * FROM `users` WHERE `user` = {ctx.author.id}")
+        mrows = await sql(0, f"SELECT * FROM `users` WHERE `user` = {ctx.author.id}")
         if not mrows:
             return False
         return mrows[0][1] == "Administrator"
@@ -222,7 +217,8 @@ class Check:
             return True
 
         maintain = await sql(
-            0, f"SELECT * FROM `miya` WHERE `miya` = '{ctx.bot.user.id}'")
+            0, f"SELECT * FROM `miya` WHERE `miya` = '{ctx.bot.user.id}'"
+        )
         block = await self.block(ctx)
         explicit = await self.explicit(ctx)
         if maintain[0][1] == "true" and not manage:
