@@ -9,12 +9,10 @@ import aiohttp
 import discord
 import koreanbots
 import psutil
-from discord import AsyncWebhookAdapter
-from discord import Webhook
+from discord import AsyncWebhookAdapter, Webhook
 from discord.ext import commands
 
-from lib import config
-from lib import utils
+from lib import config, utils
 from lib.utils import sql
 
 Get = utils.Get()
