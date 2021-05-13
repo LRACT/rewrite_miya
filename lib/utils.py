@@ -16,8 +16,7 @@ from lib import config
 class Forbidden(commands.CheckFailure):
     def __init__(self, embed):
         self.embed = embed
-        super().__init__(
-            "<a:ban_guy:761149578216603668> https://discord.gg/tu4NKbEEnn")
+        super().__init__("<a:ban_guy:761149578216603668> https://discord.gg/tu4NKbEEnn")
 
 
 class NoReg(commands.CheckFailure):
@@ -70,16 +69,12 @@ class Hook:
         else:
             raise discord.NotFound
         async with aiohttp.ClientSession() as session:
-            webhook = Webhook.from_url(url,
-                                       adapter=AsyncWebhookAdapter(session))
-            await webhook.send(f"```{content}```",
-                               username=name,
-                               avatar_url=avatar)
+            webhook = Webhook.from_url(url, adapter=AsyncWebhookAdapter(session))
+            await webhook.send(f"```{content}```", username=name, avatar_url=avatar)
 
     async def hook(self, url, content, name, avatar):
         async with aiohttp.ClientSession() as session:
-            webhook = Webhook.from_url(url,
-                                       adapter=AsyncWebhookAdapter(session))
+            webhook = Webhook.from_url(url, adapter=AsyncWebhookAdapter(session))
             await webhook.send(content, username=name, avatar_url=avatar)
 
 
@@ -124,8 +119,7 @@ class Check:
     async def mgr(self, ctx):
         if commands.is_owner():
             return True
-        mrows = await sql(
-            0, f"SELECT * FROM `users` WHERE `user` = {ctx.author.id}")
+        mrows = await sql(0, f"SELECT * FROM `users` WHERE `user` = {ctx.author.id}")
         if not mrows:
             return False
         return mrows[0][1] == "Maintainer" or mrows[0][1] == "Administrator"
@@ -133,8 +127,7 @@ class Check:
     async def owner(self, ctx):
         if commands.is_owner():
             return True
-        mrows = await sql(
-            0, f"SELECT * FROM `users` WHERE `user` = {ctx.author.id}")
+        mrows = await sql(0, f"SELECT * FROM `users` WHERE `user` = {ctx.author.id}")
         if not mrows:
             return False
         return mrows[0][1] == "Administrator"
@@ -151,7 +144,8 @@ class Check:
 
         manage = await self.mgr(ctx)
         maintain = await sql(
-            0, f"SELECT * FROM `miya` WHERE `miya` = '{ctx.bot.user.id}'")
+            0, f"SELECT * FROM `miya` WHERE `miya` = '{ctx.bot.user.id}'"
+        )
         if maintain[0][1] == "true" and not manage:
             await self.hook.terminal(
                 0,
@@ -167,10 +161,8 @@ class Check:
             if word[0] in ctx.message.content:
                 forbidden = True
                 banned = word[0]
-        users = await sql(
-            0, f"SELECT * FROM `users` WHERE `user` = '{ctx.author.id}'")
-        rows = await sql(
-            0, f"SELECT * FROM `blacklist` WHERE `id` = '{ctx.author.id}'")
+        users = await sql(0, f"SELECT * FROM `users` WHERE `user` = '{ctx.author.id}'")
+        rows = await sql(0, f"SELECT * FROM `blacklist` WHERE `id` = '{ctx.author.id}'")
         if rows:
             if manage is not True:
                 reason = rows[0][1]
