@@ -6,8 +6,9 @@ import locale
 import aiohttp
 import discord
 from discord.ext import commands
-from lib.utils import NoReg, Maintaining, Forbidden, sql
+
 from lib import utils
+from lib.utils import Forbidden, Maintaining, NoReg, sql
 
 locale.setlocale(locale.LC_ALL, "")
 

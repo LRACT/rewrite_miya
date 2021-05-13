@@ -6,7 +6,6 @@ from discord.ext import commands
 
 from lib.utils import sql
 
-
 locale.setlocale(locale.LC_ALL, "")
 
 

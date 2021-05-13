@@ -4,6 +4,7 @@ import typing
 
 import discord
 from discord.ext import commands
+
 from lib import utils
 from lib.utils import sql
 

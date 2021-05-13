@@ -3,8 +3,8 @@ import locale
 import discord
 import koreanbots
 from discord.ext import commands
-from lib import config
-from lib import utils
+
+from lib import config, utils
 
 Check = utils.Check()
 

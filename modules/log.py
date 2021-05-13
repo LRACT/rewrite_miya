@@ -1,9 +1,11 @@
-import discord
-from discord import Webhook, AsyncWebhookAdapter
-from discord.ext import commands
-from lib.utils import sql
-import aiohttp
 import datetime
+
+import aiohttp
+import discord
+from discord import AsyncWebhookAdapter, Webhook
+from discord.ext import commands
+
+from lib.utils import sql
 
 
 class Logger(commands.Cog):

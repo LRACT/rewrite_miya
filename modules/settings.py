@@ -1,11 +1,11 @@
+import asyncio
 import locale
 
 import discord
 from discord.ext import commands
 
-from lib.utils import sql
 from lib import config
-import asyncio
+from lib.utils import sql
 
 locale.setlocale(locale.LC_ALL, "")
 
