@@ -2,8 +2,7 @@ import datetime
 
 import aiohttp
 import discord
-from discord import AsyncWebhookAdapter
-from discord import Webhook
+from discord import AsyncWebhookAdapter, Webhook
 from discord.ext import commands
 
 from lib.utils import sql
