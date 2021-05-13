@@ -4,10 +4,10 @@ import typing
 
 import discord
 from discord.ext import commands
+from EZPaginator import Paginator
 
 from lib import utils
 from lib.utils import sql
-from EZPaginator import Paginator
 
 locale.setlocale(locale.LC_ALL, "")
 
