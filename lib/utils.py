@@ -4,9 +4,11 @@ import aiohttp
 import aiomysql
 import discord
 from bs4 import BeautifulSoup
-from discord import AsyncWebhookAdapter, Webhook
+from discord import AsyncWebhookAdapter
+from discord import Webhook
 from discord.ext import commands
-from pytz import timezone, utc
+from pytz import timezone
+from pytz import utc
 
 from lib import config
 
