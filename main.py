@@ -98,6 +98,7 @@ async def process(ctx):
     p = await Check.identify(ctx)
     return p
 
+
 @miya.event
 async def on_error(event, *args, **kwargs):
     s = traceback.format_exc()
