@@ -1,8 +1,8 @@
 import datetime
 import locale
-import typing
 import os
 import sys
+import typing
 
 import discord
 from discord.ext import commands
