@@ -68,12 +68,16 @@ class Hook:
         else:
             raise discord.NotFound
         async with aiohttp.ClientSession() as session:
-            webhook = Webhook.from_url(url, adapter=AsyncWebhookAdapter(session))
-            await webhook.send(f"```{content}```", username=name, avatar_url=avatar)
+            webhook = Webhook.from_url(url,
+                                       adapter=AsyncWebhookAdapter(session))
+            await webhook.send(f"```{content}```",
+                               username=name,
+                               avatar_url=avatar)
 
     async def hook(self, url, content, name, avatar):
         async with aiohttp.ClientSession() as session:
-            webhook = Webhook.from_url(url, adapter=AsyncWebhookAdapter(session))
+            webhook = Webhook.from_url(url,
+                                       adapter=AsyncWebhookAdapter(session))
             await webhook.send(content, username=name, avatar_url=avatar)
 
 
@@ -136,15 +140,17 @@ class Blacklisting:
                     timestamp=datetime.datetime.utcnow(),
                     color=0xFF3333,
                 )
-                embed.set_author(name="이용 제한", icon_url=ctx.bot.user.avatar_url)
+                embed.set_author(name="이용 제한",
+                                 icon_url=ctx.bot.user.avatar_url)
                 await user.send(
-                    f"{user.mention} https://discord.gg/tu4NKbEEnn", embed=embed
-                )
+                    f"{user.mention} https://discord.gg/tu4NKbEEnn",
+                    embed=embed)
             except:
                 pass
         elif task == 1:
             await sql(
-                1, f"UPDATE `users` SET `permission` = 'User' WHERE `id` = '{user.id}'"
+                1,
+                f"UPDATE `users` SET `permission` = 'User' WHERE `id` = '{user.id}'"
             )
             await self.hook.terminal(
                 1,
@@ -189,7 +195,8 @@ class Check:
         return {"Explicit": False}
 
     async def block(self, ctx):
-        user = await sql(0, f"SELECT * FROM `users` WHERE `user` = '{ctx.author.id}'")
+        user = await sql(
+            0, f"SELECT * FROM `users` WHERE `user` = '{ctx.author.id}'")
         if user[0][1] == "Blocked":
             return True
         return False
@@ -198,7 +205,8 @@ class Check:
         own = await ctx.bot.is_owner(ctx.author)
         if own:
             return True
-        mrows = await sql(0, f"SELECT * FROM `users` WHERE `user` = {ctx.author.id}")
+        mrows = await sql(
+            0, f"SELECT * FROM `users` WHERE `user` = {ctx.author.id}")
         if not mrows:
             return False
         return mrows[0][1] == "Maintainer" or mrows[0][1] == "Administrator"
@@ -207,7 +215,8 @@ class Check:
         own = await ctx.bot.is_owner(ctx.author)
         if own:
             return True
-        mrows = await sql(0, f"SELECT * FROM `users` WHERE `user` = {ctx.author.id}")
+        mrows = await sql(
+            0, f"SELECT * FROM `users` WHERE `user` = {ctx.author.id}")
         if not mrows:
             return False
         return mrows[0][1] == "Administrator"
@@ -236,9 +245,9 @@ class Check:
             return True
 
         maintain = await sql(
-            0, f"SELECT * FROM `miya` WHERE `miya` = '{ctx.bot.user.id}'"
-        )
-        user = await sql(0, f"SELECT * FROM `users` WHERE `user` = '{ctx.author.id}'")
+            0, f"SELECT * FROM `miya` WHERE `miya` = '{ctx.bot.user.id}'")
+        user = await sql(
+            0, f"SELECT * FROM `users` WHERE `user` = '{ctx.author.id}'")
         block = await self.block(ctx)
         explicit = await self.explicit(ctx)
         if maintain[0][1] == "true" and not manage:
