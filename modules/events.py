@@ -18,6 +18,7 @@ locale.setlocale(locale.LC_ALL, "")
 
 class Listeners(commands.Cog, name="이벤트 리스너"):
     """그게.. 확장은 확장인데 명령어가 없네?"""
+
     def __init__(self, miya):
         self.miya = miya
         self.hook = utils.Hook()
@@ -115,7 +116,7 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
                                 msg = response_msg["response"]["replies"][0][
                                     "text"]
                                 if (msg !=
-                                        "앗, 저 이번 달에 할 수 있는 말을 다 해버렸어요 🤐 다음 달까지 기다려주실거죠? ☹️"
+                                    "앗, 저 이번 달에 할 수 있는 말을 다 해버렸어요 🤐 다음 달까지 기다려주실거죠? ☹️"
                                     ):
                                     await self.hook.terminal(
                                         0,
@@ -125,37 +126,31 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
                                     )
                                     embed = discord.Embed(
                                         title=msg,
-                                        description=
-                                        f"[Discord 지원 서버 접속하기](https://discord.gg/tu4NKbEEnn)\n[한국 디스코드 봇 리스트 하트 누르기](https://koreanbots.dev/bots/720724942873821316)",
+                                        description=f"[Discord 지원 서버 접속하기](https://discord.gg/tu4NKbEEnn)\n[한국 디스코드 봇 리스트 하트 누르기](https://koreanbots.dev/bots/720724942873821316)",
                                         color=0x5FE9FF,
                                     )
                                     embed.set_footer(
-                                        text=
-                                        "이 답변은 https://pingpong.us/를 통해 만들어졌습니다."
+                                        text="이 답변은 https://pingpong.us/를 통해 만들어졌습니다."
                                     )
                                 else:
                                     embed = discord.Embed(
                                         title="💭 이런, 미야가 말풍선을 모두 사용한 모양이네요.",
-                                        description=
-                                        f"매월 1일에 말풍선이 다시 생기니 그 때까지만 기다려주세요!\n \n[Discord 지원 서버 접속하기](https://discord.gg/tu4NKbEEnn)\n[한국 디스코드 봇 리스트 하트 누르기](https://koreanbots.dev/bots/720724942873821316)",
+                                        description=f"매월 1일에 말풍선이 다시 생기니 그 때까지만 기다려주세요!\n \n[Discord 지원 서버 접속하기](https://discord.gg/tu4NKbEEnn)\n[한국 디스코드 봇 리스트 하트 누르기](https://koreanbots.dev/bots/720724942873821316)",
                                         color=0x5FE9FF,
                                     )
                                     embed.set_footer(
-                                        text=
-                                        "이 답변은 https://pingpong.us/를 통해 만들어졌습니다."
+                                        text="이 답변은 https://pingpong.us/를 통해 만들어졌습니다."
                                     )
                     else:
                         row = random.choice(rows)
                         user = self.miya.get_user(int(row[3]))
                         embed = discord.Embed(
                             title=row[2],
-                            description=
-                            f"[Discord 지원 서버 접속하기](https://discord.gg/tu4NKbEEnn)\n[한국 디스코드 봇 리스트 하트 누르기](https://koreanbots.dev/bots/720724942873821316)",
+                            description=f"[Discord 지원 서버 접속하기](https://discord.gg/tu4NKbEEnn)\n[한국 디스코드 봇 리스트 하트 누르기](https://koreanbots.dev/bots/720724942873821316)",
                             color=0x5FE9FF,
                         )
                         embed.set_footer(
-                            text=
-                            f"이 답변은 {user.name}({row[0]})님의 지식을 통해 만들어졌습니다.")
+                            text=f"이 답변은 {user.name}({row[0]})님의 지식을 통해 만들어졌습니다.")
                     await ctx.reply(embed=embed)
         elif isinstance(error, discord.NotFound) or isinstance(
                 error, commands.NoPrivateMessage):

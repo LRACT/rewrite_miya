@@ -10,6 +10,7 @@ from lib.utils import sql
 
 class Economy(commands.Cog, name="경제"):
     """미야와 함께 갑부가 되기 3분 강좌"""
+
     def __init__(self, miya):
         self.miya = miya
 
@@ -121,7 +122,8 @@ class Economy(commands.Cog, name="경제"):
             embed.set_author(name="카케구루이", icon_url=self.miya.user.avatar_url)
             embed.set_thumbnail(
                 url=ctx.author.avatar_url_as(static_format="png", size=2048))
-            embed.add_field(name="미야의 주사위", value=f"🎲 `{bot1}`, `{bot2}`", inline=True)
+            embed.add_field(
+                name="미야의 주사위", value=f"🎲 `{bot1}`, `{bot2}`", inline=True)
             embed.add_field(name=f"{ctx.author.name}님의 주사위",
                             value=f"🎲 `{user1}`, `{user2}`",
                             inline=True)
@@ -152,6 +154,7 @@ class Economy(commands.Cog, name="경제"):
             msg = await ctx.reply("🎲 홀짝 도박을 시작할게요! 당신의 선택은 무엇인가요?\n1️⃣ - 홀\n2️⃣ - 짝")
             await msg.add_reaction("1️⃣")
             await msg.add_reaction("2️⃣")
+
             def check(reaction, user):
                 return reaction.message.id == msg.id and user == ctx.author
             try:
@@ -173,6 +176,7 @@ class Economy(commands.Cog, name="경제"):
                     receive = int(rows[0][1]) - int(money)
                     await sql(1, f"UPDATE `users` SET `money` = '{receive}' WHERE `user` = {ctx.author.id}")
                     await msg.edit(content=f"🎬 안타깝네요. 뭐, 늘 이길 수만은 없는 법이니까요.\n당신의 선택 - `{list[0]}`, 결과 - `{result}`")
+
 
 def setup(miya):
     miya.add_cog(Economy(miya))
