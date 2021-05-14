@@ -36,8 +36,7 @@ class Administration(commands.Cog, name="미야 유지보수"):
 
         유저의 권한을 설정합니다.
         """
-        rows = await sql(0,
-                         f"SELECT * FROM `users` WHERE `user` = '{user.id}'")
+        rows = await sql(0, f"SELECT * FROM `users` WHERE `user` = '{user.id}'")
         if not rows:
             raise commands.BadArgument
         await sql(
@@ -58,8 +57,7 @@ class Administration(commands.Cog, name="미야 유지보수"):
         rows = await sql(0, f"SELECT * FROM `cc` WHERE `no` = '{number}'")
         if not rows:
             raise commands.BadArgument
-        await sql(
-            1, f"UPDATE `cc` SET `disabled` = 'true' WHERE `no` = '{number}'")
+        await sql(1, f"UPDATE `cc` SET `disabled` = 'true' WHERE `no` = '{number}'")
         await ctx.message.add_reaction("<:cs_yes:659355468715786262>")
 
     @commands.command(name="활성화", hidden=True)
@@ -74,8 +72,7 @@ class Administration(commands.Cog, name="미야 유지보수"):
         rows = await sql(0, f"SELECT * FROM `cc` WHERE `no` = '{number}'")
         if not rows:
             raise commands.BadArgument
-        await sql(
-            1, f"UPDATE `cc` SET `disabled` = 'false' WHERE `no` = '{number}'")
+        await sql(1, f"UPDATE `cc` SET `disabled` = 'false' WHERE `no` = '{number}'")
         await ctx.message.add_reaction("<:cs_yes:659355468715786262>")
 
     @commands.group(name="조회", hidden=True)
@@ -100,8 +97,8 @@ class Administration(commands.Cog, name="미야 유지보수"):
         해당 유저가 가르친 모든 내용을 조회합니다.
         """
         rows = await sql(
-            0,
-            f"SELECT * FROM `cc` WHERE `user` = '{user_id}' ORDER BY `no` ASC")
+            0, f"SELECT * FROM `cc` WHERE `user` = '{user_id}' ORDER BY `no` ASC"
+        )
         embeds = []
         for i in range(len(rows)):
             embed = discord.Embed(
@@ -130,7 +127,8 @@ class Administration(commands.Cog, name="미야 유지보수"):
         """
         word.lower()
         rows = await sql(
-            0, f"SELECT * FROM `cc` WHERE `word` = '{word}' ORDER BY `no` ASC")
+            0, f"SELECT * FROM `cc` WHERE `word` = '{word}' ORDER BY `no` ASC"
+        )
         embeds = []
         for i in range(len(rows)):
             embed = discord.Embed(
@@ -150,10 +148,7 @@ class Administration(commands.Cog, name="미야 유지보수"):
 
     @commands.command(name="점검", hidden=True)
     @is_owner()
-    async def _maintain(self,
-                        ctx,
-                        *,
-                        reason: typing.Optional[str] = "점검 중입니다."):
+    async def _maintain(self, ctx, *, reason: typing.Optional[str] = "점검 중입니다."):
         """
         미야야 점검 [ 사유 ]
 
@@ -171,9 +166,9 @@ class Administration(commands.Cog, name="미야 유지보수"):
             return reaction.message.id == msg.id and user == ctx.author
 
         try:
-            reaction, user = await self.miya.wait_for("reaction_add",
-                                                      timeout=30,
-                                                      check=check)
+            reaction, user = await self.miya.wait_for(
+                "reaction_add", timeout=30, check=check
+            )
         except:
             await msg.clear_reaction()
         else:
@@ -181,13 +176,11 @@ class Administration(commands.Cog, name="미야 유지보수"):
                 operation = "true"
                 await sql(1, f"UPDATE `miya` SET `maintained` = '{operation}'")
                 await sql(1, f"UPDATE `miya` SET `mtr` = '{reason}'")
-                await msg.edit(
-                    content=f"<:cs_yes:659355468715786262> 점검 모드를 활성화했습니다.")
+                await msg.edit(content=f"<:cs_yes:659355468715786262> 점검 모드를 활성화했습니다.")
             else:
                 operation = "false"
                 await sql(1, f"UPDATE `miya` SET `maintained` = '{operation}'")
-                await msg.edit(
-                    content=f"<:cs_yes:659355468715786262> 점검 모드를 비활성화했습니다.")
+                await msg.edit(content=f"<:cs_yes:659355468715786262> 점검 모드를 비활성화했습니다.")
 
     @commands.command(name="SQL", hidden=True)
     @is_owner()
@@ -233,12 +226,13 @@ class Administration(commands.Cog, name="미야 유지보수"):
     @commands.command(name="블랙", hidden=True)
     @is_manager()
     async def blacklist_management(
-            self,
-            ctx,
-            todo,
-            user: discord.User,
-            *,
-            reason: typing.Optional[str] = "사유가 지정되지 않았습니다."):
+        self,
+        ctx,
+        todo,
+        user: discord.User,
+        *,
+        reason: typing.Optional[str] = "사유가 지정되지 않았습니다.",
+    ):
         """
         미야야 블랙 < 추가 / 삭제 > < ID > [ 사유 ]
 
