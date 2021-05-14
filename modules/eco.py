@@ -10,6 +10,7 @@ from lib.utils import sql
 
 class Economy(commands.Cog, name="경제"):
     """[ 개발 중 ] 미야로 돈벌기 ㄹㅇㅋㅋ"""
+
     def __init__(self, miya):
         self.miya = miya
 

@@ -139,7 +139,8 @@ class Blacklisting:
                     timestamp=datetime.datetime.utcnow(),
                     color=0xFF3333,
                 )
-                embed.set_author(name="이용 제한", icon_url=ctx.bot.user.avatar_url)
+                embed.set_author(
+                    name="이용 제한", icon_url=ctx.bot.user.avatar_url)
                 await user.send(f"{user.mention} https://discord.gg/tu4NKbEEnn", embed=embed)
             except:
                 pass
