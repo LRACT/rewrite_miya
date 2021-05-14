@@ -12,6 +12,7 @@ locale.setlocale(locale.LC_ALL, "")
 
 class Settings(commands.Cog, name="설정"):
     """이것저것 조율하며 미야를 더 효율적으로"""
+
     def __init__(self, miya):
         self.miya = miya
 
@@ -32,8 +33,7 @@ class Settings(commands.Cog, name="설정"):
         else:
             embed = discord.Embed(
                 title="미야 이용 약관에 동의하시겠어요?",
-                description=
-                "`미야`의 서비스를 사용하시려면 이용약관에 동의해야 해요.\n`동의합니다`를 입력하여 이용 약관에 동의하실 수 있어요!\n \n[이용 약관](http://miya.kro.kr/tos)\n[개인정보보호방침](http://miya.kro.kr/privacy)",
+                description="`미야`의 서비스를 사용하시려면 이용약관에 동의해야 해요.\n`동의합니다`를 입력하여 이용 약관에 동의하실 수 있어요!\n \n[이용 약관](http://miya.kro.kr/tos)\n[개인정보보호방침](http://miya.kro.kr/privacy)",
                 color=0x5FE9FF,
             )
             embed.set_author(name="서비스 등록", icon_url=self.miya.user.avatar_url)

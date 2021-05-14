@@ -18,6 +18,7 @@ Check = utils.Check()
 
 class Administration(commands.Cog, name="미야 유지보수"):
     """미야의 유지 관리 및 보수에 사용되는 것들"""
+
     def __init__(self, miya):
         self.miya = miya
         self.black = utils.Blacklisting()
@@ -37,7 +38,7 @@ class Administration(commands.Cog, name="미야 유지보수"):
 
         현재 프로세스를 완전히 닫고 재시작합니다.
         """
-        os.execl(sys.executable, sys.executable, *sys.argv)
+        os.execl(sys.executable, sys.executable, *sys.argv)
 
     @commands.command(name="종료", hidden=True)
     @is_owner()
