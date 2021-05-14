@@ -3,7 +3,8 @@ import typing
 
 import aiohttp
 import discord
-from discord import AsyncWebhookAdapter, Webhook
+from discord import AsyncWebhookAdapter
+from discord import Webhook
 from discord.ext import commands
 
 from lib import utils
