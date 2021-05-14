@@ -22,6 +22,7 @@ def has_no_symbols():
 
 class CC(commands.Cog, name="기억"):
     """[ 개발 중 ] 미야를 똑똑하게 만들기 프로젝트"""
+
     def __init__(self, miya):
         self.miya = miya
 
@@ -45,8 +46,7 @@ class CC(commands.Cog, name="기억"):
             if response.voted:
                 embed = discord.Embed(
                     title="정말로 미야에게 이렇게 가르칠까요?",
-                    description=
-                    f"등록되면 미야가 `{word}`라고 물어봤을 때```{value}```(이)라고 답할거에요.\n \n*부적절한 어휘 및 답변의 경우 예고 없이 삭제될 수 있어요.*",
+                    description=f"등록되면 미야가 `{word}`라고 물어봤을 때```{value}```(이)라고 답할거에요.\n \n*부적절한 어휘 및 답변의 경우 예고 없이 삭제될 수 있어요.*",
                     color=0x5FE9FF,
                     timestamp=datetime.datetime.utcnow(),
                 )
@@ -79,8 +79,7 @@ class CC(commands.Cog, name="기억"):
                         )
                         embed = discord.Embed(
                             title="가르쳐주셔서 고마워요!",
-                            description=
-                            f"이제 `{word}`에 이렇게 답할거에요:\n```{value}```",
+                            description=f"이제 `{word}`에 이렇게 답할거에요:\n```{value}```",
                             color=0x5FE9FF,
                             timestamp=datetime.datetime.utcnow(),
                         )
