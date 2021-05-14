@@ -24,8 +24,7 @@ class Settings(commands.Cog, name="설정"):
 
         미야의 서비스에 이용 약관을 동의하고 등록합니다.
         """
-        rows = await sql(
-            0, f"SELECT * FROM `users` WHERE `user` = '{ctx.author.id}'")
+        rows = await sql(0, f"SELECT * FROM `users` WHERE `user` = '{ctx.author.id}'")
         if rows and rows[0][1] == "User":
             await ctx.reply(
                 f"<:cs_id:659355469034422282> 이미 등록되어 있는 유저에요.\n등록되지 않았는데 이 문구가 뜬다면 https://discord.gg/tu4NKbEEnn 로 문의해주세요."
@@ -39,19 +38,20 @@ class Settings(commands.Cog, name="설정"):
             embed.set_author(name="서비스 등록", icon_url=self.miya.user.avatar_url)
             register_msg = await ctx.reply(embed=embed)
             async with ctx.channel.typing():
+
                 def check(msg):
-                    return (msg.channel == ctx.channel
-                            and msg.author == ctx.author
-                            and msg.content == "동의합니다")
+                    return (
+                        msg.channel == ctx.channel
+                        and msg.author == ctx.author
+                        and msg.content == "동의합니다"
+                    )
 
                 try:
-                    msg = await self.miya.wait_for("message",
-                                                   timeout=180,
-                                                   check=check)
+                    msg = await self.miya.wait_for("message", timeout=180, check=check)
                 except asyncio.TimeoutError:
                     fail_embed = discord.Embed(
-                        description="미야 이용약관 동의에 시간이 너무 오래 걸려 취소되었어요.",
-                        color=0xFF0000)
+                        description="미야 이용약관 동의에 시간이 너무 오래 걸려 취소되었어요.", color=0xFF0000
+                    )
                     await register_msg.edit(embed=fail_embed, delete_after=5)
                 else:
                     try:
@@ -75,9 +75,9 @@ class Settings(commands.Cog, name="설정"):
 
     @commands.command(name="뮤트설정")
     @commands.has_permissions(administrator=True)
-    @commands.bot_has_permissions(manage_channels=True,
-                                  manage_roles=True,
-                                  manage_permissions=True)
+    @commands.bot_has_permissions(
+        manage_channels=True, manage_roles=True, manage_permissions=True
+    )
     async def role_set(self, ctx, role: discord.Role):
         """
         미야야 뮤트설정 < @역할 >
@@ -101,16 +101,16 @@ class Settings(commands.Cog, name="설정"):
                         perms.send_messages = False
                         perms.send_tts_messages = False
                         perms.add_reactions = False
-                        await channel.set_permissions(role,
-                                                      overwrite=perms,
-                                                      reason="뮤트 역할 설정")
+                        await channel.set_permissions(
+                            role, overwrite=perms, reason="뮤트 역할 설정"
+                        )
                     for channel in ctx.guild.voice_channels:
                         perms = channel.overwrites_for(role)
                         perms.speak = False
                         perms.stream = False
-                        await channel.set_permissions(role,
-                                                      overwrite=perms,
-                                                      reason="뮤트 역할 설정")
+                        await channel.set_permissions(
+                            role, overwrite=perms, reason="뮤트 역할 설정"
+                        )
                     for category in ctx.guild.categories:
                         perms = category.overwrites_for(role)
                         perms.send_messages = False
@@ -118,9 +118,9 @@ class Settings(commands.Cog, name="설정"):
                         perms.add_reactions = False
                         perms.speak = False
                         perms.stream = False
-                        await category.set_permissions(role,
-                                                       overwrite=perms,
-                                                       reason="뮤트 역할 설정")
+                        await category.set_permissions(
+                            role, overwrite=perms, reason="뮤트 역할 설정"
+                        )
                     await ctx.reply(
                         f"<:cs_settings:659355468992610304> 뮤트 역할을 `{role.name}` 역할로 설정했어요.\n \n*관리자 권한을 가진 유저 및 권한 설정을 통해 메시지 보내기 권한을 승인받은 유저는 뮤트가 적용되지 않아요.*"
                     )
@@ -146,8 +146,7 @@ class Settings(commands.Cog, name="설정"):
                 else:
                     follow = self.miya.get_channel(config.NotifyChannel)
                     try:
-                        await follow.follow(destination=channel,
-                                            reason="미야 봇 공지 채널 설정")
+                        await follow.follow(destination=channel, reason="미야 봇 공지 채널 설정")
                     except discord.Forbidden:
                         await ctx.reply(
                             f"<:cs_no:659355468816187405> 공지 채널 설정은 해당 채널에 웹훅 관리 권한이 필요해요."
@@ -157,8 +156,7 @@ class Settings(commands.Cog, name="설정"):
                             f"<:cs_settings:659355468992610304> {channel.mention} 채널에 미야 지원 서버의 공지 채널을 팔로우했어요.\n \n*미야의 공지를 더 이상 받고 싶지 않다면 서버의 연동 설정에서 팔로우를 취소해주세요!*"
                         )
             elif what == "로그":
-                webhook = await channel.create_webhook(name="미야 로그",
-                                                       reason="미야 로그 설정")
+                webhook = await channel.create_webhook(name="미야 로그", reason="미야 로그 설정")
                 await sql(
                     1,
                     f"UPDATE `guilds` SET `eventLog` = '{webhook.url}' WHERE `guild` = '{ctx.guild.id}'",
@@ -203,8 +201,7 @@ class Settings(commands.Cog, name="설정"):
                     f"UPDATE `guilds` SET `linkFiltering` = 'false' WHERE `guild` = '{ctx.guild.id}'",
                 )
                 if result == "SUCCESS":
-                    await ctx.reply(
-                        f"<:cs_off:659355468887490560> 링크 차단 기능을 비활성화했어요!")
+                    await ctx.reply(f"<:cs_off:659355468887490560> 링크 차단 기능을 비활성화했어요!")
             else:
                 raise commands.BadArgument
 
