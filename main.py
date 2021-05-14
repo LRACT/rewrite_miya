@@ -1,15 +1,14 @@
+import io
 import locale
+import sys
+import traceback
 
+import aiohttp
 import discord
 import koreanbots
 from discord.ext import commands
 
-from lib import config
-from lib import utils
-import aiohttp
-import io
-import traceback
-import sys
+from lib import config, utils
 
 Check = utils.Check()
 
