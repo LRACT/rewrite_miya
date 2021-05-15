@@ -7,8 +7,12 @@ import aiohttp
 import discord
 from discord.ext import commands
 
-from lib import config, utils
-from lib.utils import Forbidden, Maintaining, NoReg, sql
+from lib import config
+from lib import utils
+from lib.utils import Forbidden
+from lib.utils import Maintaining
+from lib.utils import NoReg
+from lib.utils import sql
 
 locale.setlocale(locale.LC_ALL, "")
 
