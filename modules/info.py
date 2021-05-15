@@ -13,6 +13,7 @@ from lib.utils import sql
 
 class Information(commands.Cog, name="정보"):
     """다양한 정보들을 제공하는 것들"""
+
     def __init__(self, miya):
         self.miya = miya
         self.get = utils.Get()
@@ -49,7 +50,8 @@ class Information(commands.Cog, name="정보"):
                     try:
                         webhook = Webhook.from_url(
                             guilds[0][1], adapter=AsyncWebhookAdapter(session))
-                        channel = ctx.guild.get_channel(int(webhook.channel_id))
+                        channel = ctx.guild.get_channel(
+                            int(webhook.channel_id))
                         if channel is not None:
                             logCh = channel.mention
                     except:
@@ -206,8 +208,7 @@ class Information(commands.Cog, name="정보"):
             embed.set_footer(
                 text="코로나19 감염이 의심되면 즉시 보건소 및 콜센터(전화1339)로 신고바랍니다.")
             embed.set_thumbnail(
-                url=
-                "https://cdn.discordapp.com/attachments/746786600037384203/761404488023408640/unknown.png"
+                url="https://cdn.discordapp.com/attachments/746786600037384203/761404488023408640/unknown.png"
             )
             await ctx.reply(embed=embed)
 

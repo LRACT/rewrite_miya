@@ -18,6 +18,7 @@ Check = utils.Check()
 
 class Administration(commands.Cog, name="디버그"):
     """미야의 유지 관리 및 보수에 사용되는 것들"""
+
     def __init__(self, miya):
         self.miya = miya
         self.black = utils.Blacklisting()
