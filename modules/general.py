@@ -10,8 +10,7 @@ import koreanbots
 import psutil
 from discord.ext import commands
 
-from lib import config
-from lib import utils
+from lib import config, utils
 
 locale.setlocale(locale.LC_ALL, "")
 
