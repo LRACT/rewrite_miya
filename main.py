@@ -36,8 +36,7 @@ class Miya(commands.AutoShardedBot):
         try:
             payload = content.encode("utf-8")
             async with aiohttp.ClientSession(raise_for_status=True) as cs:
-                async with cs.post("https://hastebin.com/documents",
-                                   data=payload) as r:
+                async with cs.post("https://hastebin.com/documents", data=payload) as r:
                     post = await r.json()
                     uri = post["key"]
                     return f"https://hastebin.com/{uri}"
