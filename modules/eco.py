@@ -10,6 +10,7 @@ from lib.utils import sql
 
 class Economy(commands.Cog, name="경제"):
     """미야와 함께 갑부가 되는 법 3분 강좌"""
+
     def __init__(self, miya):
         self.miya = miya
 
@@ -183,8 +184,7 @@ class Economy(commands.Cog, name="경제"):
                         f"UPDATE `users` SET `money` = '{receive}' WHERE `user` = {ctx.author.id}",
                     )
                     await msg.edit(
-                        content=
-                        f"🕹 축하드려요! 뭐, 이런 게 초보자의 행운이려나요.\n당신의 선택 - `{list[0]}`, 결과 - `{result}`"
+                        content=f"🕹 축하드려요! 뭐, 이런 게 초보자의 행운이려나요.\n당신의 선택 - `{list[0]}`, 결과 - `{result}`"
                     )
                 else:
                     receive = int(rows[0][2]) - int(money)
@@ -193,8 +193,7 @@ class Economy(commands.Cog, name="경제"):
                         f"UPDATE `users` SET `money` = '{receive}' WHERE `user` = {ctx.author.id}",
                     )
                     await msg.edit(
-                        content=
-                        f"🎬 안타깝네요. 뭐, 늘 이길 수만은 없는 법이니까요.\n당신의 선택 - `{list[0]}`, 결과 - `{result}`"
+                        content=f"🎬 안타깝네요. 뭐, 늘 이길 수만은 없는 법이니까요.\n당신의 선택 - `{list[0]}`, 결과 - `{result}`"
                     )
 
 

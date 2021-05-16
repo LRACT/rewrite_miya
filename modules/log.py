@@ -11,6 +11,7 @@ from lib.utils import sql
 
 class Logger(commands.Cog, name="기록장"):
     """미야의 이벤트 로그를 남기기"""
+
     def __init__(self, bot):
         self.bot = bot
 
@@ -48,8 +49,7 @@ class Logger(commands.Cog, name="기록장"):
         )
         embed.add_field(
             name="메시지가 있던 채널",
-            value=
-            f"{msg.channel.mention} ({msg.channel.name}, {msg.channel.id})",
+            value=f"{msg.channel.mention} ({msg.channel.name}, {msg.channel.id})",
             inline=False,
         )
         embed.set_thumbnail(
@@ -93,14 +93,12 @@ class Logger(commands.Cog, name="기록장"):
         )
         embed.add_field(
             name="메시지가 수정된 채널",
-            value=
-            f"{after.channel.mention} ({after.channel.name}, {after.channel.id})",
+            value=f"{after.channel.mention} ({after.channel.name}, {after.channel.id})",
             inline=False,
         )
         embed.add_field(
             name="메시지 바로가기",
-            value=
-            f"https://discord.com/channels/{after.guild.id}/{after.channel.id}/{after.id}",
+            value=f"https://discord.com/channels/{after.guild.id}/{after.channel.id}/{after.id}",
             inline=False,
         )
         if before.content is not None:

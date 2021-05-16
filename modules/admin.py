@@ -18,6 +18,7 @@ Check = utils.Check()
 
 class Administration(commands.Cog, name="디버그"):
     """미야의 유지 관리 및 보수에 사용되는 것들"""
+
     def __init__(self, miya):
         self.miya = miya
         self.black = utils.Blacklisting()
@@ -330,7 +331,7 @@ class Administration(commands.Cog, name="디버그"):
             await ctx.reply(f"🎬 **{shard}**번 샤드를 켰어요.")
         else:
             await ctx.reply(f"🎬 **{shard}**번 샤드는 이미 켜져 있어요.")
-    
+
     @sharding.command(name="끄기", hideen=True)
     @is_owner()
     async def _turn_off(self, ctx, shard: int):

@@ -18,6 +18,7 @@ locale.setlocale(locale.LC_ALL, "")
 
 class General(commands.Cog, name="일반"):
     """일반적이고 다양한 기능들"""
+
     def __init__(self, miya):
         self.miya = miya
         self.check = utils.Check()
@@ -56,8 +57,7 @@ class General(commands.Cog, name="일반"):
                                 inline=False)
             embed.add_field(
                 name="미야에 대하여",
-                value=
-                f"Powered by Team Urtica with ❤ in discord.py\n봇에 대한 정보는 `미야야 미야` 명령어를 참고하세요!",
+                value=f"Powered by Team Urtica with ❤ in discord.py\n봇에 대한 정보는 `미야야 미야` 명령어를 참고하세요!",
             )
         else:
             for cog in self.miya.cogs:
@@ -136,8 +136,7 @@ class General(commands.Cog, name="일반"):
         미야의 초대 링크를 표시합니다.
         """
         embed = discord.Embed(
-            description=
-            "[여기](https://discord.com/api/oauth2/authorize?client_id=720724942873821316&permissions=2147483647&redirect_uri=https%3A%2F%2Fmiya.kro.kr&response_type=code&scope=bot%20identify%20email)를 클릭하면 초대하실 수 있어요!",
+            description="[여기](https://discord.com/api/oauth2/authorize?client_id=720724942873821316&permissions=2147483647&redirect_uri=https%3A%2F%2Fmiya.kro.kr&response_type=code&scope=bot%20identify%20email)를 클릭하면 초대하실 수 있어요!",
             color=0x5FE9FF,
             timestamp=datetime.datetime.utcnow(),
         )
