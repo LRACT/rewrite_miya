@@ -13,7 +13,6 @@ from lib.utils import sql
 
 class Information(commands.Cog, name="정보"):
     """다양한 정보들을 제공하는 것들"""
-
     def __init__(self, miya):
         self.miya = miya
         self.get = utils.Get()
@@ -27,13 +26,13 @@ class Information(commands.Cog, name="정보"):
         명령어를 실행한 서버의 정보와 미야 설정을 불러옵니다.
         """
         async with ctx.channel.typing():
-            embed = discord.Embed(title=f"{ctx.guild.name} 정보 및 미야 설정", color=0x5FE9FF)
+            embed = discord.Embed(title=f"{ctx.guild.name} 정보 및 미야 설정",
+                                  color=0x5FE9FF)
             guilds = await sql(
-                0, f"SELECT * FROM `guilds` WHERE `guild` = '{ctx.guild.id}'"
-            )
+                0, f"SELECT * FROM `guilds` WHERE `guild` = '{ctx.guild.id}'")
             memberNoti = await sql(
-                0, f"SELECT * FROM `membernoti` WHERE `guild` = '{ctx.guild.id}'"
-            )
+                0,
+                f"SELECT * FROM `membernoti` WHERE `guild` = '{ctx.guild.id}'")
             muteRole = "설정되어 있지 않아요!"
             memberCh = "설정되어 있지 않아요!"
             if guilds[0][2] != 1234:
@@ -70,31 +69,37 @@ class Information(commands.Cog, name="정보"):
                 "vip-us-west": "<:vip:762569445427511307> 미국 - 서부",
             }
             verification = {
-                discord.VerificationLevel.none: "**없음**\n제한 없음",
-                discord.VerificationLevel.low: "**낮음**\n이메일 인증이 완료된 Discord 계정이어야 해요.",
-                discord.VerificationLevel.medium: "**중간**\n이메일 인증이 완료되고, Discord에 가입한 지 5분이 지나야 해요.",
-                discord.VerificationLevel.high: "**높음**\n이메일 인증이 완료되고, Discord에 가입한 지 5분이 지나며, 서버의 멤버가 된 지 10분이 지나야 해요.",
-                discord.VerificationLevel.extreme: "**매우 높음**\n휴대폰 인증이 완료된 Discord 계정이어야 해요.",
+                discord.VerificationLevel.none:
+                "**없음**\n제한 없음",
+                discord.VerificationLevel.low:
+                "**낮음**\n이메일 인증이 완료된 Discord 계정이어야 해요.",
+                discord.VerificationLevel.medium:
+                "**중간**\n이메일 인증이 완료되고, Discord에 가입한 지 5분이 지나야 해요.",
+                discord.VerificationLevel.high:
+                "**높음**\n이메일 인증이 완료되고, Discord에 가입한 지 5분이 지나며, 서버의 멤버가 된 지 10분이 지나야 해요.",
+                discord.VerificationLevel.extreme:
+                "**매우 높음**\n휴대폰 인증이 완료된 Discord 계정이어야 해요.",
             }
             time = self.get.localize(ctx.guild.created_at)
-            embed.add_field(name="공지 채널", value="📢 **서버의 연동 설정을 확인하세요!**", inline=False)
+            embed.add_field(name="공지 채널",
+                            value="📢 **서버의 연동 설정을 확인하세요!**",
+                            inline=False)
             embed.add_field(name="멤버 알림 채널", value=memberCh)
             embed.add_field(name="뮤트 역할", value=muteRole)
-            embed.add_field(
-                name="서버 부스트 인원 수", value=f"{len(ctx.guild.premium_subscribers)}명"
-            )
+            embed.add_field(name="서버 부스트 인원 수",
+                            value=f"{len(ctx.guild.premium_subscribers)}명")
             embed.add_field(name="서버 오너", value=f"{str(ctx.guild.owner)}님")
             embed.add_field(name="서버 인원 수", value=f"{ctx.guild.member_count}명")
             embed.add_field(name="서버 역할 갯수", value=f"{len(ctx.guild.roles)}개")
-            embed.add_field(name="서버 위치", value=location[str(ctx.guild.region)])
+            embed.add_field(name="서버 위치",
+                            value=location[str(ctx.guild.region)])
             embed.add_field(name="서버 개설 날짜", value=time)
-            embed.add_field(
-                name="서버 보안 수준", value=verification[ctx.guild.verification_level]
-            )
-            embed.set_author(name="이 서버의 정보", icon_url=self.miya.user.avatar_url)
+            embed.add_field(name="서버 보안 수준",
+                            value=verification[ctx.guild.verification_level])
+            embed.set_author(name="이 서버의 정보",
+                             icon_url=self.miya.user.avatar_url)
             embed.set_thumbnail(
-                url=ctx.guild.icon_url_as(static_format="png", size=2048)
-            )
+                url=ctx.guild.icon_url_as(static_format="png", size=2048))
             await ctx.reply(embed=embed)
 
     @commands.command(name="봇정보", aliases=["미야정보", "미야"])
@@ -117,9 +122,8 @@ class Information(commands.Cog, name="정보"):
                 color=0x5FE9FF,
                 timestamp=datetime.datetime.utcnow(),
             )
-            e.set_thumbnail(
-                url=self.miya.user.avatar_url_as(static_format="png", size=2048)
-            )
+            e.set_thumbnail(url=self.miya.user.avatar_url_as(
+                static_format="png", size=2048))
             e.set_author(name="미야 TMI", icon_url=self.miya.user.avatar_url)
             await ctx.reply(embed=e)
 
@@ -135,9 +139,8 @@ class Information(commands.Cog, name="정보"):
         if user is None:
             user = ctx.author
         embed = discord.Embed(color=0x5FE9FF)
-        embed.set_author(
-            name=f"{user.name}님의 프로필 사진", icon_url=self.miya.user.avatar_url
-        )
+        embed.set_author(name=f"{user.name}님의 프로필 사진",
+                         icon_url=self.miya.user.avatar_url)
         embed.set_image(url=user.avatar_url_as(static_format="png", size=2048))
         await ctx.reply(embed=embed)
 
@@ -172,22 +175,27 @@ class Information(commands.Cog, name="정보"):
         """
         async with ctx.channel.typing():
             _corona = await self.get.corona()
-            embed = discord.Embed(
-                title="국내 코로나19 현황", description="질병관리청 집계 기준", color=0x5FE9FF
-            )
-            embed.add_field(
-                name="확진자", value=f"{_corona[0].split(')')[1]}명", inline=True
-            )
-            embed.add_field(name="완치(격리 해제)", value=f"{_corona[1]}명", inline=True)
+            embed = discord.Embed(title="국내 코로나19 현황",
+                                  description="질병관리청 집계 기준",
+                                  color=0x5FE9FF)
+            embed.add_field(name="확진자",
+                            value=f"{_corona[0].split(')')[1]}명",
+                            inline=True)
+            embed.add_field(name="완치(격리 해제)",
+                            value=f"{_corona[1]}명",
+                            inline=True)
             embed.add_field(name="치료 중", value=f"{_corona[2]}명", inline=True)
             embed.add_field(name="사망", value=f"{_corona[3]}명", inline=True)
-            embed.add_field(
-                name="정보 출처", value="[질병관리청](http://ncov.mohw.go.kr/)", inline=True
-            )
-            embed.set_author(name="COVID-19", icon_url=self.miya.user.avatar_url)
-            embed.set_footer(text="코로나19 감염이 의심되면 즉시 보건소 및 콜센터(전화1339)로 신고바랍니다.")
+            embed.add_field(name="정보 출처",
+                            value="[질병관리청](http://ncov.mohw.go.kr/)",
+                            inline=True)
+            embed.set_author(name="COVID-19",
+                             icon_url=self.miya.user.avatar_url)
+            embed.set_footer(
+                text="코로나19 감염이 의심되면 즉시 보건소 및 콜센터(전화1339)로 신고바랍니다.")
             embed.set_thumbnail(
-                url="https://cdn.discordapp.com/attachments/746786600037384203/761404488023408640/unknown.png"
+                url=
+                "https://cdn.discordapp.com/attachments/746786600037384203/761404488023408640/unknown.png"
             )
             await ctx.reply(embed=embed)
 

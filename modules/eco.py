@@ -10,7 +10,6 @@ from lib.utils import sql
 
 class Economy(commands.Cog, name="경제"):
     """미야와 함께 갑부가 되는 법 3분 강좌"""
-
     def __init__(self, miya):
         self.miya = miya
 
@@ -24,7 +23,8 @@ class Economy(commands.Cog, name="경제"):
         """
         if user is None:
             user = ctx.author
-        rows = await sql(0, f"SELECT * FROM `users` WHERE `user` = '{user.id}'")
+        rows = await sql(0,
+                         f"SELECT * FROM `users` WHERE `user` = '{user.id}'")
         if not rows:
             await ctx.reply(
                 f"<:cs_no:659355468816187405> **{user}**님은 미야 서비스에 가입하지 않으셨어요."
@@ -35,11 +35,14 @@ class Economy(commands.Cog, name="경제"):
                 timestamp=datetime.datetime.utcnow(),
                 color=0x5FE9FF,
             )
-            embed.add_field(name="가지고 있는 코인", value=f"{rows[0][2]}개", inline=False)
-            embed.add_field(
-                name="곧 더 많은 기능이 찾아옵니다...", value="새로운 기능도 많이 기대해주세요!", inline=False
-            )
-            embed.set_thumbnail(url=user.avatar_url_as(static_format="png", size=2048))
+            embed.add_field(name="가지고 있는 코인",
+                            value=f"{rows[0][2]}개",
+                            inline=False)
+            embed.add_field(name="곧 더 많은 기능이 찾아옵니다...",
+                            value="새로운 기능도 많이 기대해주세요!",
+                            inline=False)
+            embed.set_thumbnail(
+                url=user.avatar_url_as(static_format="png", size=2048))
             embed.set_author(name="지갑", icon_url=self.miya.user.avatar_url)
             await ctx.reply(embed=embed)
 
@@ -52,10 +55,12 @@ class Economy(commands.Cog, name="경제"):
 
         300 코인을 지급합니다. 12시간에 한 번만 사용 가능합니다.
         """
-        rows = await sql(0, f"SELECT * FROM `users` WHERE `user` = '{ctx.author.id}'")
+        rows = await sql(
+            0, f"SELECT * FROM `users` WHERE `user` = '{ctx.author.id}'")
         plus = int(rows[0][2]) + 300
         await sql(
-            1, f"UPDATE `users` SET `money` = '{plus}' WHERE `user` = '{ctx.author.id}'"
+            1,
+            f"UPDATE `users` SET `money` = '{plus}' WHERE `user` = '{ctx.author.id}'"
         )
         await ctx.reply("🎋 당신의 잔고에 `300` 코인을 추가했어요!\n매 12시간마다 다시 지급받으실 수 있어요.")
 
@@ -67,7 +72,8 @@ class Economy(commands.Cog, name="경제"):
 
         미야와 주사위 도박을 진행합니다.
         """
-        rows = await sql(0, f"SELECT * FROM `users` WHERE `user` = '{ctx.author.id}'")
+        rows = await sql(
+            0, f"SELECT * FROM `users` WHERE `user` = '{ctx.author.id}'")
         if money in ["모두", "전체", "올인"]:
             money = rows[0][2]
         elif money.isdecimal() is not True:
@@ -114,9 +120,10 @@ class Economy(commands.Cog, name="경제"):
                 rest = int(rows[0][2]) + plus
             embed.set_author(name="카케구루이", icon_url=self.miya.user.avatar_url)
             embed.set_thumbnail(
-                url=ctx.author.avatar_url_as(static_format="png", size=2048)
-            )
-            embed.add_field(name="미야의 주사위", value=f"🎲 `{bot1}`, `{bot2}`", inline=True)
+                url=ctx.author.avatar_url_as(static_format="png", size=2048))
+            embed.add_field(name="미야의 주사위",
+                            value=f"🎲 `{bot1}`, `{bot2}`",
+                            inline=True)
             embed.add_field(
                 name=f"{ctx.author.name}님의 주사위",
                 value=f"🎲 `{user1}`, `{user2}`",
@@ -136,7 +143,8 @@ class Economy(commands.Cog, name="경제"):
 
         미야와 홀짝 도박을 진행합니다.
         """
-        rows = await sql(0, f"SELECT * FROM `users` WHERE `user` = '{ctx.author.id}'")
+        rows = await sql(
+            0, f"SELECT * FROM `users` WHERE `user` = '{ctx.author.id}'")
         if money in ["모두", "전체", "올인"]:
             money = rows[0][2]
         elif money.isdecimal() is not True:
@@ -145,7 +153,8 @@ class Economy(commands.Cog, name="경제"):
         if int(rows[0][2]) == 0 or int(rows[0][2]) < int(money):
             await ctx.reply(f"🍋 코인이 부족해요! 현재 코인 : {rows[0][2]}개")
         else:
-            msg = await ctx.reply("🎲 홀짝 도박을 시작할게요! 당신의 선택은 무엇인가요?\n1️⃣ - 홀\n2️⃣ - 짝")
+            msg = await ctx.reply(
+                "🎲 홀짝 도박을 시작할게요! 당신의 선택은 무엇인가요?\n1️⃣ - 홀\n2️⃣ - 짝")
             await msg.add_reaction("1️⃣")
             await msg.add_reaction("2️⃣")
 
@@ -153,13 +162,13 @@ class Economy(commands.Cog, name="경제"):
                 return reaction.message.id == msg.id and user == ctx.author
 
             try:
-                reaction, user = await self.miya.wait_for(
-                    "reaction_add", timeout=30, check=check
-                )
+                reaction, user = await self.miya.wait_for("reaction_add",
+                                                          timeout=30,
+                                                          check=check)
             except:
                 await msg.edit(
-                    content="⚡ 고민되는 선택인가요? 그럼, 좀 더 고민해보시고 다시 시도해주세요.", delete_after=10
-                )
+                    content="⚡ 고민되는 선택인가요? 그럼, 좀 더 고민해보시고 다시 시도해주세요.",
+                    delete_after=10)
             else:
                 list = None
                 if str(reaction.emoji) == "1️⃣":
@@ -174,7 +183,8 @@ class Economy(commands.Cog, name="경제"):
                         f"UPDATE `users` SET `money` = '{receive}' WHERE `user` = {ctx.author.id}",
                     )
                     await msg.edit(
-                        content=f"🕹 축하드려요! 뭐, 이런 게 초보자의 행운이려나요.\n당신의 선택 - `{list[0]}`, 결과 - `{result}`"
+                        content=
+                        f"🕹 축하드려요! 뭐, 이런 게 초보자의 행운이려나요.\n당신의 선택 - `{list[0]}`, 결과 - `{result}`"
                     )
                 else:
                     receive = int(rows[0][2]) - int(money)
@@ -183,7 +193,8 @@ class Economy(commands.Cog, name="경제"):
                         f"UPDATE `users` SET `money` = '{receive}' WHERE `user` = {ctx.author.id}",
                     )
                     await msg.edit(
-                        content=f"🎬 안타깝네요. 뭐, 늘 이길 수만은 없는 법이니까요.\n당신의 선택 - `{list[0]}`, 결과 - `{result}`"
+                        content=
+                        f"🎬 안타깝네요. 뭐, 늘 이길 수만은 없는 법이니까요.\n당신의 선택 - `{list[0]}`, 결과 - `{result}`"
                     )
 
 

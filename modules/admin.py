@@ -18,7 +18,6 @@ Check = utils.Check()
 
 class Administration(commands.Cog, name="디버그"):
     """미야의 유지 관리 및 보수에 사용되는 것들"""
-
     def __init__(self, miya):
         self.miya = miya
         self.black = utils.Blacklisting()
@@ -54,15 +53,16 @@ class Administration(commands.Cog, name="디버그"):
 
         유저의 권한을 설정합니다.
         """
-        rows = await sql(0, f"SELECT * FROM `users` WHERE `user` = '{user.id}'")
+        rows = await sql(0,
+                         f"SELECT * FROM `users` WHERE `user` = '{user.id}'")
         if not rows:
             raise commands.BadArgument
         if permission not in [
-            "Administrator",
-            "Maintainer",
-            "User",
-            "Stranger",
-            "Offender",
+                "Administrator",
+                "Maintainer",
+                "User",
+                "Stranger",
+                "Offender",
         ]:
             raise commands.BadArgument
         await sql(
@@ -147,8 +147,8 @@ class Administration(commands.Cog, name="디버그"):
         해당 유저가 가르친 모든 내용을 조회합니다.
         """
         rows = await sql(
-            0, f"SELECT * FROM `cc` WHERE `user` = '{user_id}' ORDER BY `no` ASC"
-        )
+            0,
+            f"SELECT * FROM `cc` WHERE `user` = '{user_id}' ORDER BY `no` ASC")
         embeds = []
         for i in range(len(rows)):
             embed = discord.Embed(
@@ -177,8 +177,7 @@ class Administration(commands.Cog, name="디버그"):
         """
         word.lower()
         rows = await sql(
-            0, f"SELECT * FROM `cc` WHERE `word` = '{word}' ORDER BY `no` ASC"
-        )
+            0, f"SELECT * FROM `cc` WHERE `word` = '{word}' ORDER BY `no` ASC")
         embeds = []
         for i in range(len(rows)):
             embed = discord.Embed(
@@ -210,7 +209,8 @@ class Administration(commands.Cog, name="디버그"):
             raise commands.BadArgument
         if rows[0][4] == "false":
             raise commands.BadArgument
-        await sql(1, f"UPDATE `cc` SET `disabled` = 'false' WHERE `no` = '{number}'")
+        await sql(
+            1, f"UPDATE `cc` SET `disabled` = 'false' WHERE `no` = '{number}'")
         await ctx.reply(f"🎬 #{rows[0][0]}의 {rows[0][1]}, 다시 활성화했어요.")
 
     @commands.command(name="비활성화", hidden=True)
@@ -227,12 +227,16 @@ class Administration(commands.Cog, name="디버그"):
             raise commands.BadArgument
         if rows[0][4] == "true":
             raise commands.BadArgument
-        await sql(1, f"UPDATE `cc` SET `disabled` = 'true' WHERE `no` = '{number}'")
+        await sql(
+            1, f"UPDATE `cc` SET `disabled` = 'true' WHERE `no` = '{number}'")
         await ctx.reply(f"🎬 #{rows[0][0]}의 {rows[0][1]}, 비활성화했어요.")
 
     @commands.command(name="점검", hidden=True)
     @is_owner()
-    async def _maintain(self, ctx, *, reason: typing.Optional[str] = "점검 중입니다."):
+    async def _maintain(self,
+                        ctx,
+                        *,
+                        reason: typing.Optional[str] = "점검 중입니다."):
         """
         미야야 점검 [ 사유 ]
 
@@ -250,9 +254,9 @@ class Administration(commands.Cog, name="디버그"):
             return reaction.message.id == msg.id and user == ctx.author
 
         try:
-            reaction, user = await self.miya.wait_for(
-                "reaction_add", timeout=30, check=check
-            )
+            reaction, user = await self.miya.wait_for("reaction_add",
+                                                      timeout=30,
+                                                      check=check)
         except:
             await msg.delete()
         else:
@@ -260,11 +264,13 @@ class Administration(commands.Cog, name="디버그"):
                 operation = "true"
                 await sql(1, f"UPDATE `miya` SET `maintained` = '{operation}'")
                 await sql(1, f"UPDATE `miya` SET `mtr` = '{reason}'")
-                await msg.edit(content=f"<:cs_yes:659355468715786262> 점검 모드를 활성화했어요!")
+                await msg.edit(
+                    content=f"<:cs_yes:659355468715786262> 점검 모드를 활성화했어요!")
             else:
                 operation = "false"
                 await sql(1, f"UPDATE `miya` SET `maintained` = '{operation}'")
-                await msg.edit(content=f"<:cs_yes:659355468715786262> 점검 모드를 비활성화했어요!")
+                await msg.edit(
+                    content=f"<:cs_yes:659355468715786262> 점검 모드를 비활성화했어요!")
 
     @commands.command(name="SQL", hidden=True)
     @is_owner()
@@ -383,9 +389,9 @@ class Administration(commands.Cog, name="디버그"):
             return reaction.message.id == msg.id and user == ctx.author
 
         try:
-            reaction, user = await self.miya.wait_for(
-                "reaction_add", timeout=30, check=check
-            )
+            reaction, user = await self.miya.wait_for("reaction_add",
+                                                      timeout=30,
+                                                      check=check)
         except:
             await msg.delete()
         else:
@@ -414,9 +420,9 @@ class Administration(commands.Cog, name="디버그"):
             return reaction.message.id == msg.id and user == ctx.author
 
         try:
-            reaction, user = await self.miya.wait_for(
-                "reaction_add", timeout=30, check=check
-            )
+            reaction, user = await self.miya.wait_for("reaction_add",
+                                                      timeout=30,
+                                                      check=check)
         except:
             await msg.delete()
         else:
