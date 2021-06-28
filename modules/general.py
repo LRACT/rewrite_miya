@@ -42,8 +42,10 @@ class General(commands.Cog, name="일반"):
             )
             cogs_desc = ""
             for cog in self.miya.cogs:
-                if (len(self.miya.get_cog(cog).get_commands()) >= 1
-                        and str(cog) not in config.Hidden):
+                if (
+                    len(self.miya.get_cog(cog).get_commands()) >= 1
+                    and str(cog) not in config.Hidden
+                ):
                     cogs_desc += f"`{cog}` - {self.miya.cogs[cog].__doc__}\n"
             embed.add_field(name="확장 목록", value=cogs_desc, inline=False)
             commands_desc = ""
@@ -52,9 +54,9 @@ class General(commands.Cog, name="일반"):
                     temp = command.help.split("\n")
                     commands_desc += f"{temp[0]} - {temp[3]}\n"
             if commands_desc:
-                embed.add_field(name="확장에 포함되지 않는 명령어 목록",
-                                value=commands_desc,
-                                inline=False)
+                embed.add_field(
+                    name="확장에 포함되지 않는 명령어 목록", value=commands_desc, inline=False
+                )
             embed.add_field(
                 name="미야에 대하여",
                 value=f"Powered by Team Urtica with ❤ in discord.py\n봇에 대한 정보는 `미야야 미야` 명령어를 참고하세요!",
@@ -69,8 +71,7 @@ class General(commands.Cog, name="일반"):
                         timestamp=datetime.datetime.utcnow(),
                     )
                     for command in self.miya.get_cog(cog).get_commands():
-                        if not command.hidden or (
-                                await self.check.owner(ctx)) is True:
+                        if not command.hidden or (await self.check.owner(ctx)) is True:
                             embed.add_field(
                                 name=command.help.split("\n")[0],
                                 value=command.help.split("\n")[3],
@@ -109,22 +110,20 @@ class General(commands.Cog, name="일반"):
         asdf = str(last_time - first_time)[6:]
         msg_latency = round(float(asdf) * 1000, 2)
         uptime = datetime.datetime.now() - datetime.datetime.fromtimestamp(
-            psutil.Process(os.getpid()).create_time())
+            psutil.Process(os.getpid()).create_time()
+        )
         shard = self.miya.get_shard(ctx.guild.shard_id)
         bot_latency = round(shard.latency * 1000, 2)
-        embed = discord.Embed(color=0x5FE9FF,
-                              timestamp=datetime.datetime.utcnow())
-        embed.add_field(name="API 지연 시간",
-                        value=f"{bot_latency}ms",
-                        inline=False)
-        embed.add_field(name="메시지 지연 시간",
-                        value=f"{msg_latency}ms",
-                        inline=False)
+        embed = discord.Embed(color=0x5FE9FF, timestamp=datetime.datetime.utcnow())
+        embed.add_field(name="API 지연 시간", value=f"{bot_latency}ms", inline=False)
+        embed.add_field(name="메시지 지연 시간", value=f"{msg_latency}ms", inline=False)
         embed.add_field(name="구동 시간", value=str(uptime).split(".")[0])
         embed.set_thumbnail(
-            url=ctx.author.avatar_url_as(static_format="png", size=2048))
-        embed.set_author(name=f"#{ctx.guild.shard_id} | 지연 시간",
-                         icon_url=self.miya.user.avatar_url)
+            url=ctx.author.avatar_url_as(static_format="png", size=2048)
+        )
+        embed.set_author(
+            name=f"#{ctx.guild.shard_id} | 지연 시간", icon_url=self.miya.user.avatar_url
+        )
         await m.edit(content=":ping_pong: Pong!", embed=embed)
 
     @commands.command(name="초대")
@@ -140,8 +139,7 @@ class General(commands.Cog, name="일반"):
             color=0x5FE9FF,
             timestamp=datetime.datetime.utcnow(),
         )
-        embed.set_author(name="미야를 초대하시겠어요?",
-                         icon_url=self.miya.user.avatar_url)
+        embed.set_author(name="미야를 초대하시겠어요?", icon_url=self.miya.user.avatar_url)
         await ctx.reply(embed=embed)
 
     @commands.command(name="골라", aliases=["골라줘"])
@@ -157,8 +155,7 @@ class General(commands.Cog, name="일반"):
         else:
             select = random.choice(args)
             embed = discord.Embed(description=select, color=0x5FE9FF)
-            embed.set_author(name="미야의 선택은...",
-                             icon_url=self.miya.user.avatar_url)
+            embed.set_author(name="미야의 선택은...", icon_url=self.miya.user.avatar_url)
             await ctx.reply(embed=embed)
 
     @commands.command(name="말해", aliases=["말해줘"])
@@ -170,8 +167,7 @@ class General(commands.Cog, name="일반"):
         미야가 당신이 한 말을 조금 가공해서(?) 따라합니다.
         """
         embed = discord.Embed(description=text, color=0x5FE9FF)
-        embed.set_author(name=f"{ctx.author}님이 말하시길...",
-                         icon_url=ctx.author.avatar_url)
+        embed.set_author(name=f"{ctx.author}님이 말하시길...", icon_url=ctx.author.avatar_url)
         try:
             await ctx.message.delete()
         except:
@@ -215,14 +211,15 @@ class General(commands.Cog, name="일반"):
         """
         async with ctx.channel.typing():
             async with aiohttp.ClientSession() as session:
-                async with session.get(
-                        "https://random-d.uk/api/v2/quack") as response:
+                async with session.get("https://random-d.uk/api/v2/quack") as response:
                     p = await response.json()
-                    duck = discord.Embed(color=0xFFFCC9,
-                                         timestamp=datetime.datetime.utcnow())
+                    duck = discord.Embed(
+                        color=0xFFFCC9, timestamp=datetime.datetime.utcnow()
+                    )
                     duck.set_image(url=p["url"])
-                    duck.set_author(name="어떠한 오리 사진에 대하여",
-                                    icon_url=self.miya.user.avatar_url)
+                    duck.set_author(
+                        name="어떠한 오리 사진에 대하여", icon_url=self.miya.user.avatar_url
+                    )
                     duck.set_footer(text=p["message"])
                     await ctx.reply(embed=duck)
 

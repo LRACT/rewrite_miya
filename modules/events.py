@@ -85,9 +85,11 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
             "manage_webhooks": "웹훅 관리하기",
             "manage_messages": "메시지 관리하기",
         }
-        if (isinstance(error, commands.CommandNotFound)
-                or isinstance(error, commands.NotOwner)
-                or isinstance(error, commands.CheckFailure)):
+        if (
+            isinstance(error, commands.CommandNotFound)
+            or isinstance(error, commands.NotOwner)
+            or isinstance(error, commands.CheckFailure)
+        ):
             try:
                 p = await self.check.identify(ctx)
             except Exception as e:
@@ -120,18 +122,16 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
                     if not rows:
                         async with aiohttp.ClientSession() as cs:
                             async with cs.post(
-                                    config.PPBRequest,
-                                    headers=headers,
-                                    json={"request": {
-                                        "query": query
-                                    }},
+                                config.PPBRequest,
+                                headers=headers,
+                                json={"request": {"query": query}},
                             ) as r:
                                 response_msg = await r.json()
-                                msg = response_msg["response"]["replies"][0][
-                                    "text"]
-                                if (msg !=
-                                    "앗, 저 이번 달에 할 수 있는 말을 다 해버렸어요 🤐 다음 달까지 기다려주실거죠? ☹️"
-                                    ):
+                                msg = response_msg["response"]["replies"][0]["text"]
+                                if (
+                                    msg
+                                    != "앗, 저 이번 달에 할 수 있는 말을 다 해버렸어요 🤐 다음 달까지 기다려주실거죠? ☹️"
+                                ):
                                     await self.hook.terminal(
                                         0,
                                         f"PINGPONG Builder >\nUser - {ctx.author} ({ctx.author.id})\nSent - {query}\nReceived - {msg}\nGuild - {ctx.guild.name} ({ctx.guild.id})",
@@ -164,14 +164,15 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
                             color=0x5FE9FF,
                         )
                         embed.set_footer(
-                            text=f"이 답변은 {user.name}({row[0]})님의 지식을 통해 만들어졌습니다.")
+                            text=f"이 답변은 {user.name}({row[0]})님의 지식을 통해 만들어졌습니다."
+                        )
                     await ctx.reply(embed=embed)
         elif isinstance(error, discord.NotFound) or isinstance(
-                error, commands.NoPrivateMessage):
+            error, commands.NoPrivateMessage
+        ):
             return
         elif isinstance(error, discord.Forbidden):
-            await ctx.reply(
-                f"<:cs_no:659355468816187405> 권한 부족 등의 이유로 명령어 실행에 실패했어요.")
+            await ctx.reply(f"<:cs_no:659355468816187405> 권한 부족 등의 이유로 명령어 실행에 실패했어요.")
         elif isinstance(error, commands.MissingPermissions):
             mp = error.missing_perms
             p = perms[mp[0]]
@@ -189,9 +190,11 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
                 f"<:cs_stop:665173353874587678> 잠시 기다려주세요. 해당 명령어를 사용하려면 {round(error.retry_after, 2)}초를 더 기다리셔야 해요.\n해당 명령어는 `{error.cooldown.per}`초에 `{error.cooldown.rate}`번만 사용할 수 있어요."
             )
         elif isinstance(error, commands.MissingRequiredArgument) or isinstance(
-                error, commands.BadArgument):
+            error, commands.BadArgument
+        ):
             if isinstance(error, commands.MemberNotFound) or isinstance(
-                    error, commands.UserNotFound):
+                error, commands.UserNotFound
+            ):
                 await ctx.reply(
                     f":mag_right: `{error.argument}`(이)라는 유저를 찾을 수 없었어요. 정확한 유저를 지정해주세요!"
                 )
@@ -215,8 +218,8 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
         else:
             exc = getattr(error, "original", error)
             lines = "".join(
-                traceback.format_exception(exc.__class__, exc,
-                                           exc.__traceback__))
+                traceback.format_exception(exc.__class__, exc, exc.__traceback__)
+            )
             lines = f"{ctx.command}에 발생한 예외를 무시합니다;\n{lines}"
             channel = self.miya.get_channel(config.Debug)
             try:
@@ -245,10 +248,14 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
         if msg.channel.type == discord.ChannelType.private:
             return
 
-        if ("discord.gg" in msg.content or "discord.com/invite" in msg.content
-                or "discordapp.com/invite" in msg.content):
+        if (
+            "discord.gg" in msg.content
+            or "discord.com/invite" in msg.content
+            or "discordapp.com/invite" in msg.content
+        ):
             rows = await sql(
-                0, f"SELECT * FROM `guilds` WHERE `guild` = '{msg.guild.id}'")
+                0, f"SELECT * FROM `guilds` WHERE `guild` = '{msg.guild.id}'"
+            )
             if rows:
                 if rows[0][3] == "true":
                     if not msg.channel.topic or "=무시" not in msg.channel.topic:
@@ -268,8 +275,7 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
             "서버 입퇴장 기록",
             self.miya.user.avatar_url,
         )
-        grows = await sql(
-            0, f"SELECT * FROM `guilds` WHERE `guild` = '{guild.id}'")
+        grows = await sql(0, f"SELECT * FROM `guilds` WHERE `guild` = '{guild.id}'")
         if not grows:
             g_result = await sql(
                 1,
@@ -299,8 +305,7 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
                         timestamp=datetime.datetime.utcnow(),
                         color=0x5FE9FF,
                     )
-                    embed.set_author(name="반가워요!",
-                                     icon_url=self.miya.user.avatar_url)
+                    embed.set_author(name="반가워요!", icon_url=self.miya.user.avatar_url)
                     await guild.owner.send(
                         f"<:cs_notify:659355468904529920> {guild.owner.mention}",
                         embed=embed,
@@ -312,8 +317,7 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
                         "서버 입퇴장 기록",
                         self.miya.user.avatar_url,
                     )
-        user = await sql(
-            0, f"SELECT * FROM `users` WHERE `user` = '{guild.owner.id}'")
+        user = await sql(0, f"SELECT * FROM `users` WHERE `user` = '{guild.owner.id}'")
         if not user:
             return
         elif user[0][1] == "Offender":
@@ -349,8 +353,7 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
     async def on_member_join(self, member):
         if member.bot == False:
             rows = await sql(
-                0,
-                f"SELECT * FROM `membernoti` WHERE `guild` = '{member.guild.id}'"
+                0, f"SELECT * FROM `membernoti` WHERE `guild` = '{member.guild.id}'"
             )
             if not rows:
                 return
@@ -361,8 +364,7 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
                     try:
                         msg = value[2].replace("{member}", str(member.mention))
                         msg = msg.replace("{guild}", str(member.guild.name))
-                        msg = msg.replace("{count}",
-                                          str(member.guild.member_count))
+                        msg = msg.replace("{count}", str(member.guild.member_count))
                         await channel.send(msg)
                     except Exception as e:
                         await self.hook.terminal(
@@ -376,8 +378,7 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
     async def on_member_remove(self, member):
         if member.bot == False:
             rows = await sql(
-                0,
-                f"SELECT * FROM `membernoti` WHERE `guild` = '{member.guild.id}'"
+                0, f"SELECT * FROM `membernoti` WHERE `guild` = '{member.guild.id}'"
             )
             if not rows:
                 return
@@ -388,8 +389,7 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
                     try:
                         msg = value[3].replace("{member}", str(member))
                         msg = msg.replace("{guild}", str(member.guild.name))
-                        msg = msg.replace("{count}",
-                                          str(member.guild.member_count))
+                        msg = msg.replace("{count}", str(member.guild.member_count))
                         await channel.send(msg)
                     except Exception as e:
                         await self.hook.terminal(
