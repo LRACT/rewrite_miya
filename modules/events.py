@@ -140,7 +140,7 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
                                     embed = discord.Embed(
                                         title=msg,
                                         description=
-                                        f"[Discord 지원 서버 접속하기](https://discord.gg/J4jSUTwgd3)\n[한국 디스코드 봇 리스트 하트 누르기](https://koreanbots.dev/bots/720724942873821316)",
+                                        f"[Discord 지원 서버 접속하기](https://discord.gg/BWF7VCNVz4)\n[한국 디스코드 봇 리스트 하트 누르기](https://koreanbots.dev/bots/720724942873821316)",
                                         color=0x5FE9FF,
                                     )
                                     embed.set_footer(
@@ -151,7 +151,7 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
                                     embed = discord.Embed(
                                         title="💭 이런, 미야가 말풍선을 모두 사용한 모양이네요.",
                                         description=
-                                        f"매월 1일에 말풍선이 다시 생기니 그 때까지만 기다려주세요!\n \n[Discord 지원 서버 접속하기](https://discord.gg/tu4NKbEEnn)\n[한국 디스코드 봇 리스트 하트 누르기](https://koreanbots.dev/bots/720724942873821316)",
+                                        f"매월 1일에 말풍선이 다시 생기니 그 때까지만 기다려주세요!\n \n[Discord 지원 서버 접속하기](https://discord.gg/BWF7VCNVz4)\n[한국 디스코드 봇 리스트 하트 누르기](https://koreanbots.dev/bots/720724942873821316)",
                                         color=0x5FE9FF,
                                     )
                                     embed.set_footer(
@@ -164,7 +164,7 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
                         embed = discord.Embed(
                             title=row[2],
                             description=
-                            f"[Discord 지원 서버 접속하기](https://discord.gg/J4jSUTwgd3)\n[한국 디스코드 봇 리스트 하트 누르기](https://koreanbots.dev/bots/720724942873821316)",
+                            f"[Discord 지원 서버 접속하기](https://discord.gg/BWF7VCNVz4)\n[한국 디스코드 봇 리스트 하트 누르기](https://koreanbots.dev/bots/720724942873821316)",
                             color=0x5FE9FF,
                         )
                         embed.set_footer(
@@ -298,7 +298,7 @@ class Listeners(commands.Cog, name="이벤트 리스너"):
                         title="미야를 초대해주셔서 감사해요!",
                         description="""
 `미야야 채널설정 공지 #채널` 명령어를 사용해 공지 채널을 설정해주세요.
-미야에 관련된 문의 사항은 [지원 서버](https://discord.gg/J4jSUTwgd3)에서 하실 수 있어요!
+미야에 관련된 문의 사항은 [지원 서버](https://discord.gg/BWF7VCNVz4)에서 하실 수 있어요!
 미야의 더욱 다양한 명령어는 `미야야 도움말` 명령어로 살펴보세요!
                         """,
                         timestamp=datetime.datetime.utcnow(),

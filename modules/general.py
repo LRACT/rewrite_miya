@@ -236,7 +236,7 @@ class General(commands.Cog, name="일반"):
         미야 지원 서버로 가는 링크를 표시합니다.
         """
         await ctx.reply(
-            "<:cs_id:659355469034422282> 미야에 관해 문의할 것이 있으시다면, 아래 지원 서버로 접속해주세요.\nhttps://discord.gg/J4jSUTwgd3"
+            "<:cs_id:659355469034422282> 미야에 관해 문의할 것이 있으시다면, 아래 지원 서버로 접속해주세요.\nhttps://discord.gg/BWF7VCNVz4"
         )
 
 
