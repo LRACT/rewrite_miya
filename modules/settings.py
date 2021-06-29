@@ -27,7 +27,7 @@ class Settings(commands.Cog, name="설정"):
             0, f"SELECT * FROM `users` WHERE `user` = '{ctx.author.id}'")
         if rows and rows[0][1] == "User":
             await ctx.reply(
-                f"<:cs_id:659355469034422282> 이미 등록되어 있는 유저에요.\n등록되지 않았는데 이 문구가 뜬다면 https://discord.gg/tu4NKbEEnn 로 문의해주세요."
+                f"<:cs_id:659355469034422282> 이미 등록되어 있는 유저에요.\n등록되지 않았는데 이 문구가 뜬다면 https://discord.gg/BWF7VCNVz4 로 문의해주세요."
             )
         else:
             embed = discord.Embed(
