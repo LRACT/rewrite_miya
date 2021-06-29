@@ -290,7 +290,7 @@ class Check:
         elif not user and ctx.command.name != "가입":
             await sql(
                 1,
-                f"INSERT INTO `users`(`user`, `permission`, `money`) VALUES('{ctx.author.id}', 'Unregistered', '500')",
+                f"INSERT INTO `users`(`user`, `permission`, `money`) VALUES('{ctx.author.id}', 'Stranger', '500')",
             )
             await self.hook.terminal(
                 0,
