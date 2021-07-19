@@ -1,37 +1,48 @@
-import io
-import locale
-import sys
-import traceback
-
-import aiohttp
 import discord
-import koreanbots
+from discord import Webhook, AsyncWebhookAdapter
 from discord.ext import commands
-
-from lib import config
-from lib import utils
-
-Check = utils.Check()
-
-locale.setlocale(locale.LC_ALL, "")
-
+import koreanbots
+import config
+import aiomysql
+import aiohttp
+import os
+import traceback
+import io
 
 class Miya(commands.AutoShardedBot):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.koreanbots = koreanbots.Client(self, config.DBKRToken)
+        self.kb = koreanbots.Koreanbots(self, config.KBToken, run_task=True)
 
-    async def get_rank(self):
-        num = 0
-        while True:
-            num += 1
-            response = await self.koreanbots.getBots(num)
-            data = [x.name for x in response]
-            if "미야" in data:
-                index = data.index("미야")
-                result = 9 * (num - 1) + (index + 1)
-                return result
+    async def debug(self, *args, **kwargs):
+        async with aiohttp.ClientSession() as cs:
+            webhook = Webhook.from_url(config.Debug, adapter=AsyncWebhookAdapter(cs))
+            await webhook.send(*args, **kwargs)
 
+
+    async def sql(self, type: int, exec: str):
+        o = await aiomysql.connect(
+            host=config.DB["host"],
+            port=config.DB["port"],
+            user=config.DB["user"],
+            password=config.DB["password"],
+            db=config.DB["schema"],
+            autocommit=True,
+        )
+        c = await o.cursor(aiomysql.DictCursor)
+        try:
+            await c.execute(exec)
+        except Exception as e:
+            raise e
+            o.close()
+        else:
+            if type == 0:
+                results = await c.fetchall()
+                o.close()
+                return results
+            o.close()
+            return "Successfully Executed"
+    
     async def record(self, content):
         try:
             payload = content.encode("utf-8")
@@ -43,7 +54,6 @@ class Miya(commands.AutoShardedBot):
                     return f"https://hastebin.com/{uri}"
         except aiohttp.ClientResponseError:
             return discord.File(io.StringIO(content), filename="Traceback.txt")
-
 
 intents = discord.Intents(
     guilds=True,
@@ -59,62 +69,43 @@ intents = discord.Intents(
     reactions=True,
     typing=True,
 )
-miya = Miya(
+bot = Miya(
     shard_count=3,
-    command_prefix="미야야",
+    command_prefix=commands.when_mentioned_or("미야야"),
     strip_after_prefix=True,
-    description="다재다능한 Discord 봇, 미야.",
-    help_command=None,
-    chunk_guilds_at_startup=True,
+    max_messages=200000,
     intents=intents,
+    help_command=None,
+    description="더 많은 일을 간단하게, Discord에서 경험해보세요.",
+    chunk_guilds_at_startup=True,
 )
 
-
-def load_modules(miya):
-    failed = []
-    exts = [
-        "modules.info",
-        "modules.general",
-        "modules.settings",
-        "modules.admin",
-        "modules.mods",
-        "modules.cc",
-        "modules.eco",
-        "modules.events",
-        "modules.log",
-        "jishaku",
-    ]
-
-    for ext in exts:
+def startup(bot):
+    modules = []
+    for module in os.listdir("./exts"):
+        if module.endswith(".py"):
+            a = module.replace(".py", "")
+            modules.append(f"exts.{a}")
+    modules.append("jishaku")
+    for ext in modules:
         try:
-            miya.load_extension(ext)
+            bot.load_extension(ext)
         except Exception as e:
-            print(f"{e.__class__.__name__}: {e}")
-            failed.append(ext)
+            s = traceback.format_exc()
+            print(f"{e.__class__.__name__}: {s}")
 
-    return failed
-
-
-@miya.check
-async def process(ctx):
-    p = await Check.identify(ctx)
-    return p
-
-
-@miya.event
+@bot.event
 async def on_error(event, *args, **kwargs):
     s = traceback.format_exc()
     content = f"{event}에 발생한 예외를 무시합니다;\n{s}"
-    channel = miya.get_channel(config.Debug)
     try:
-        await channel.send(f"```{content}```")
+        await bot.debug(f"```py\n{content}```", avatar_url=bot.user.avatar_url, username=f"{bot.user.name} 디버깅")
     except:
-        record = await miya.record(content)
+        record = await bot.record(content)
         if isinstance(record, discord.File):
-            await channel.send(file=record)
+            await bot.debug(file=record, avatar_url=bot.user.avatar_url, username=f"{bot.user.name} 디버깅")
         else:
-            await channel.send(record)
+            await bot.debug(record, avatar_url=bot.user.avatar_url, username=f"{bot.user.name} 디버깅")
 
-
-load_modules(miya)
-miya.run(config.BotToken)
+startup(bot)
+bot.run(config.Token)
