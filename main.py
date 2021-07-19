@@ -1,13 +1,14 @@
-import discord
-from discord import Webhook, AsyncWebhookAdapter
-from discord.ext import commands
-import koreanbots
-import config
-import aiomysql
-import aiohttp
+import io
 import os
 import traceback
-import io
+
+import aiohttp
+import aiomysql
+import config
+import discord
+import koreanbots
+from discord import AsyncWebhookAdapter, Webhook
+from discord.ext import commands
 
 
 class Miya(commands.AutoShardedBot):
