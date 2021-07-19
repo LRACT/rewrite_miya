@@ -17,8 +17,7 @@ class Miya(commands.AutoShardedBot):
 
     async def debug(self, *args, **kwargs):
         async with aiohttp.ClientSession() as cs:
-            webhook = Webhook.from_url(
-                config.Debug, adapter=AsyncWebhookAdapter(cs))
+            webhook = Webhook.from_url(config.Debug, adapter=AsyncWebhookAdapter(cs))
             await webhook.send(*args, **kwargs)
 
     async def sql(self, type: int, exec: str):
@@ -48,8 +47,7 @@ class Miya(commands.AutoShardedBot):
         try:
             payload = content.encode("utf-8")
             async with aiohttp.ClientSession(raise_for_status=True) as cs:
-                async with cs.post("https://hastebin.com/documents",
-                                   data=payload) as r:
+                async with cs.post("https://hastebin.com/documents", data=payload) as r:
                     post = await r.json()
                     uri = post["key"]
                     return f"https://hastebin.com/{uri}"
@@ -103,13 +101,24 @@ async def on_error(event, *args, **kwargs):
     s = traceback.format_exc()
     content = f"{event}에 발생한 예외를 무시합니다;\n{s}"
     try:
-        await bot.debug(f"```py\n{content}```", avatar_url=bot.user.avatar_url, username=f"{bot.user.name} 디버깅")
+        await bot.debug(
+            f"```py\n{content}```",
+            avatar_url=bot.user.avatar_url,
+            username=f"{bot.user.name} 디버깅",
+        )
     except:
         record = await bot.record(content)
         if isinstance(record, discord.File):
-            await bot.debug(file=record, avatar_url=bot.user.avatar_url, username=f"{bot.user.name} 디버깅")
+            await bot.debug(
+                file=record,
+                avatar_url=bot.user.avatar_url,
+                username=f"{bot.user.name} 디버깅",
+            )
         else:
-            await bot.debug(record, avatar_url=bot.user.avatar_url, username=f"{bot.user.name} 디버깅")
+            await bot.debug(
+                record, avatar_url=bot.user.avatar_url, username=f"{bot.user.name} 디버깅"
+            )
+
 
 startup(bot)
 bot.run(config.Token)
