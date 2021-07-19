@@ -9,6 +9,7 @@ import os
 import traceback
 import io
 
+
 class Miya(commands.AutoShardedBot):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -16,9 +17,9 @@ class Miya(commands.AutoShardedBot):
 
     async def debug(self, *args, **kwargs):
         async with aiohttp.ClientSession() as cs:
-            webhook = Webhook.from_url(config.Debug, adapter=AsyncWebhookAdapter(cs))
+            webhook = Webhook.from_url(
+                config.Debug, adapter=AsyncWebhookAdapter(cs))
             await webhook.send(*args, **kwargs)
-
 
     async def sql(self, type: int, exec: str):
         o = await aiomysql.connect(
@@ -42,7 +43,7 @@ class Miya(commands.AutoShardedBot):
                 return results
             o.close()
             return "Successfully Executed"
-    
+
     async def record(self, content):
         try:
             payload = content.encode("utf-8")
@@ -54,6 +55,7 @@ class Miya(commands.AutoShardedBot):
                     return f"https://hastebin.com/{uri}"
         except aiohttp.ClientResponseError:
             return discord.File(io.StringIO(content), filename="Traceback.txt")
+
 
 intents = discord.Intents(
     guilds=True,
@@ -80,6 +82,7 @@ bot = Miya(
     chunk_guilds_at_startup=True,
 )
 
+
 def startup(bot):
     modules = []
     for module in os.listdir("./exts"):
@@ -93,6 +96,7 @@ def startup(bot):
         except Exception as e:
             s = traceback.format_exc()
             print(f"{e.__class__.__name__}: {s}")
+
 
 @bot.event
 async def on_error(event, *args, **kwargs):
