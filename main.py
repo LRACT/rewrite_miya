@@ -7,7 +7,8 @@ import aiomysql
 import config
 import discord
 import koreanbots
-from discord import AsyncWebhookAdapter, Webhook
+from discord import AsyncWebhookAdapter
+from discord import Webhook
 from discord.ext import commands
 
 
